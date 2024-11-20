@@ -1,2 +1,28 @@
-package mk.ukim.finki.backendtravelorganizer.model;public class Accommodation {
+package mk.ukim.finki.backendtravelorganizer.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDate;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+public class Accommodation {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String location;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
+    private double cost;
 }

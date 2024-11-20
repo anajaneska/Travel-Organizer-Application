@@ -1,7 +1,9 @@
 package mk.ukim.finki.backendtravelorganizer.service.impl;
 
 import mk.ukim.finki.backendtravelorganizer.model.Accommodation;
+import mk.ukim.finki.backendtravelorganizer.model.Trip;
 import mk.ukim.finki.backendtravelorganizer.repository.AccommodationRepository;
+import mk.ukim.finki.backendtravelorganizer.repository.TripRepository;
 import mk.ukim.finki.backendtravelorganizer.service.AccommodationService;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +12,12 @@ import java.util.List;
 @Service
 public class AccommodationServiceImpl implements AccommodationService {
     private final AccommodationRepository accommodationRepository;
+    private final TripRepository tripRepository;
 
-    public AccommodationServiceImpl(AccommodationRepository accommodationRepository) {
+
+    public AccommodationServiceImpl(AccommodationRepository accommodationRepository, TripRepository tripRepository) {
         this.accommodationRepository = accommodationRepository;
+        this.tripRepository = tripRepository;
     }
 
     public List<Accommodation> getAllAccommodations() {
@@ -29,5 +34,12 @@ public class AccommodationServiceImpl implements AccommodationService {
 
     public void deleteAccommodation(Long id) {
         accommodationRepository.deleteById(id);
+    }
+    public Accommodation addAccommodationToTrip(Long tripId, Accommodation accommodation) {
+        Trip trip = tripRepository.findById(tripId)
+                .orElseThrow(() -> new RuntimeException("Trip not found"));
+        trip.addAccommodation(accommodation);
+        accommodationRepository.save(accommodation);
+        return accommodation;
     }
 }

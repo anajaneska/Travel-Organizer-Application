@@ -9,4 +9,5 @@ public interface AccommodationService {
     Accommodation getAccommodationById(Long id);
     Accommodation saveAccommodation(Accommodation accommodation);
     void deleteAccommodation(Long id);
+    Accommodation addAccommodationToTrip(Long tripId, Accommodation accommodation);
 }

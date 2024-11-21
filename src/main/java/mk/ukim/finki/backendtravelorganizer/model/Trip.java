@@ -28,8 +28,17 @@ public class Trip {
     @JsonManagedReference
     private List<Accommodation> accommodations = new ArrayList<>();
 
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Activity> activities = new ArrayList<>();
+
+
     public void addAccommodation(Accommodation accommodation) {
         accommodation.setTrip(this);
         this.accommodations.add(accommodation);
+    }
+    public void addActivity(Activity activity){
+        activity.setTrip(this);
+        this.activities.add(activity);
     }
 }

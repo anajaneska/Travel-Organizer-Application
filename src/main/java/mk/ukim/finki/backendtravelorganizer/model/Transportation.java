@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mk.ukim.finki.backendtravelorganizer.model.enumeration.TransportationType;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,7 +22,15 @@ public class Transportation {
 
     @Enumerated(EnumType.STRING)
     private TransportationType type;
-    private String schedule;
+    private String startLocation;
+    private String destination;
+    private String ticketInfo; // Path or identifier for ticket file
     private String route;
-    private String ticketInfo;
+    private LocalDateTime departureTime;
+    private LocalDateTime arrivalTime;
+    private Double cost;
+
+    @ManyToOne
+    @JoinColumn(name = "trip_id")
+    private Trip trip;
 }

@@ -41,4 +41,17 @@ public class TransportationController {
         transportationService.deleteTransportation(id);
         return ResponseEntity.noContent().build();
     }
+    @PostMapping("/trip/{tripId}")
+    public ResponseEntity<Transportation> addTransportationToTrip(
+            @PathVariable Long tripId,
+            @RequestBody Transportation transportation) {
+        Transportation savedTransportation = transportationService.addTransportationToTrip(tripId, transportation);
+        return ResponseEntity.ok(savedTransportation);
+    }
+
+    @GetMapping("/trip/{tripId}")
+    public ResponseEntity<List<Transportation>> getTransportationByTripId(@PathVariable Long tripId) {
+        List<Transportation> transportations = transportationService.getTransportationByTripId(tripId);
+        return ResponseEntity.ok(transportations);
+    }
 }

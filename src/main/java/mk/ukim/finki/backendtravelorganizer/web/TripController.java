@@ -52,4 +52,12 @@ public class TripController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/{tripId}/budget-status")
+    public ResponseEntity<String> getBudgetStatus(@PathVariable Long tripId) {
+        Trip trip = tripService.getTripById(tripId).orElseThrow(() -> new RuntimeException("Trip not found"));
+        boolean exceeded = trip.isBudgetExceeded();
+        String message = exceeded ? "Budget exceeded!" : "Within budget.";
+        return ResponseEntity.ok(message);
+    }
 }

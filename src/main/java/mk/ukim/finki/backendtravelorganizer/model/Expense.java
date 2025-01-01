@@ -24,4 +24,11 @@ public class Expense {
     @ManyToOne
     @JoinColumn(name = "trip_id")
     private Trip trip;
+
+    public Expense(String description, Double amount, LocalDate date, Trip trip) {
+        this.description = description;
+        this.amount = amount;
+        this.date = date;
+        this.trip = trip;
+    }
 }

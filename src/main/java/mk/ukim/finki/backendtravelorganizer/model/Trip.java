@@ -63,4 +63,16 @@ public class Trip {
     public boolean isBudgetExceeded() {
         return currentExpenses > budget;
     }
+
+    public Trip(String destination, LocalDate startDate, LocalDate endDate, List<Accommodation> accommodations, List<Activity> activities, List<Transportation> transportations, Double budget, Double currentExpenses, List<Expense> expenses) {
+        this.destination = destination;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.accommodations = accommodations;
+        this.activities = activities;
+        this.transportations = transportations;
+        this.budget = budget;
+        this.currentExpenses = currentExpenses;
+        this.expenses = expenses;
+    }
 }

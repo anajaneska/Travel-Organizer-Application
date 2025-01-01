@@ -25,7 +25,6 @@ public class Transportation {
     private String startLocation;
     private String destination;
     private String ticketInfo; // Path or identifier for ticket file
-    private String route;
     private LocalDateTime departureTime;
     private LocalDateTime arrivalTime;
     private Double cost;
@@ -33,4 +32,15 @@ public class Transportation {
     @ManyToOne
     @JoinColumn(name = "trip_id")
     private Trip trip;
+
+    public Transportation(TransportationType type, String startLocation, String destination, String ticketInfo, LocalDateTime departureTime, LocalDateTime arrivalTime, Double cost, Trip trip) {
+        this.type = type;
+        this.startLocation = startLocation;
+        this.destination = destination;
+        this.ticketInfo = ticketInfo;
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+        this.cost = cost;
+        this.trip = trip;
+    }
 }

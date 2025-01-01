@@ -28,4 +28,11 @@ public class Accommodation {
     @JsonBackReference
     private Trip trip;
 
+    public Accommodation(String location, LocalDate checkInDate, LocalDate checkOutDate, double cost, Trip trip) {
+        this.location = location;
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
+        this.cost = cost;
+        this.trip = trip;
+    }
 }

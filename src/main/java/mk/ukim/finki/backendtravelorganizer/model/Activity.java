@@ -27,4 +27,11 @@ public class Activity {
     @JoinColumn(name = "trip_id")
     @JsonBackReference
     private Trip trip;
+
+    public Activity(String name, String description, LocalDateTime dateTime, Trip trip) {
+        this.name = name;
+        this.description = description;
+        this.dateTime = dateTime;
+        this.trip = trip;
+    }
 }

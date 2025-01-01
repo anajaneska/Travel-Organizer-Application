@@ -2,6 +2,7 @@ package mk.ukim.finki.backendtravelorganizer.web;
 
 import mk.ukim.finki.backendtravelorganizer.model.Accommodation;
 import mk.ukim.finki.backendtravelorganizer.model.Trip;
+import mk.ukim.finki.backendtravelorganizer.model.dto.AccommodationDto;
 import mk.ukim.finki.backendtravelorganizer.model.exceptions.TripDoesNotExistException;
 import mk.ukim.finki.backendtravelorganizer.service.AccommodationService;
 import mk.ukim.finki.backendtravelorganizer.service.TripService;
@@ -23,8 +24,15 @@ public class AccommodationController {
     }
 
     @GetMapping
-    public List<Accommodation> getAllAccommodations() {
-        return accommodationService.getAllAccommodations();
+    public ResponseEntity<List<Accommodation>> getAllAccommodations() {
+        List<Accommodation> accommodations = accommodationService.getAllAccommodations();
+        return ResponseEntity.ok(accommodations);
+    }
+
+    @GetMapping("/trip/{tripId}")
+    public ResponseEntity<List<Accommodation>> getAccommodationsByTrip(@PathVariable Long tripId) {
+        List<Accommodation> accommodations = accommodationService.getAccommodationsByTripId(tripId);
+        return ResponseEntity.ok(accommodations);
     }
 
     @GetMapping("/{id}")
@@ -48,5 +56,10 @@ public class AccommodationController {
     public ResponseEntity<Accommodation> addAccommodationToTrip(@PathVariable Long tripId, @RequestBody Accommodation accommodation) {
         Accommodation savedAccommodation = accommodationService.addAccommodationToTrip(tripId, accommodation);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedAccommodation);  // 201 Created
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Accommodation> editAccommodation(@PathVariable Long id, @RequestBody AccommodationDto updatedAccommodationDto) {
+        Accommodation editedAccommodation = accommodationService.editAccommodation(id, updatedAccommodationDto);
+        return ResponseEntity.ok(editedAccommodation);
     }
 }

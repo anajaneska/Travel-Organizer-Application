@@ -8,6 +8,8 @@ const header = (props) => {
             <div>
                 <Link to={"/trips"}>My Trips</Link>
                 <Link to={"/profile"}>Profile</Link>
+                <Link to={"/login"}>Login</Link>
+                <Link to={"/register"}>Register</Link>
             </div>
         </nav>
     );

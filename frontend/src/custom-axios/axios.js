@@ -1,11 +1,15 @@
-import axios from "axios";
+import axios from 'axios';
 
 const instance = axios.create({
   baseURL: 'http://localhost:9091/api',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  withCredentials: false, // or true if you're using cookies
+});
+
+instance.interceptors.request.use((config) => {
+  const token = localStorage.getItem("jwt");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 export default instance;

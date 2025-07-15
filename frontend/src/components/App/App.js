@@ -6,7 +6,8 @@ import TravelAppService from "../../repository/repo";
 import {BrowserRouter as Router, Redirect, Route, Routes} from "react-router-dom";
 import Header from "../Header/Header";
 import Trips from "../Trips/Trips";
-
+import Login from '../Login.js'
+import Register from '../Register.js';
 class App extends Component {
 
   constructor(props) {
@@ -49,7 +50,9 @@ class App extends Component {
         <Router>
             <Header></Header>
             <Routes>
-                <Route path={"/accommodations"} exact render={() => <Accommodations accommodations={this.state.accommodations}/>}></Route>
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/accommodations" element={<Accommodations />} />
                 <Route path={"/trips"} exact render={() => <Trips trips={this.state.trips}/>}></Route>
             </Routes>
         </Router>

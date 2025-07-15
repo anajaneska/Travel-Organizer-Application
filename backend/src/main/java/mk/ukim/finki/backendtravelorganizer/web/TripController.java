@@ -1,8 +1,10 @@
 package mk.ukim.finki.backendtravelorganizer.web;
 
+import jakarta.servlet.http.HttpServletRequest;
 import mk.ukim.finki.backendtravelorganizer.model.Trip;
 import mk.ukim.finki.backendtravelorganizer.service.TripService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -60,5 +62,9 @@ public class TripController {
         boolean exceeded = trip.isBudgetExceeded();
         String message = exceeded ? "Budget exceeded!" : "Within budget.";
         return ResponseEntity.ok(message);
+    }
+    @GetMapping("/csrf-token")
+    public CsrfToken getCsrfToken(HttpServletRequest request){
+        return (CsrfToken) request.getAttribute("_csrf");
     }
 }

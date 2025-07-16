@@ -36,10 +36,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
        return http
+               .cors(Customizer.withDefaults())
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/auth/login","/api/auth/register","/api/accommodations")
+                        .requestMatchers("/api/auth/login","/api/auth/register","/api/accommodations/all")
                         .permitAll()
+                        .requestMatchers("/api/trips/**").authenticated()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults()) //za postman
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

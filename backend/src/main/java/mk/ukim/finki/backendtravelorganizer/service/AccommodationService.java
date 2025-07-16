@@ -15,4 +15,5 @@ public interface AccommodationService {
     Accommodation addAccommodationToTrip(Long id, Long tripId, LocalDate checkIn, LocalDate checkOut);
     List<Accommodation> getAccommodationsByTripId(Long tripId);
 
+    List<Accommodation> getAllAvailableAccommodations();
 }

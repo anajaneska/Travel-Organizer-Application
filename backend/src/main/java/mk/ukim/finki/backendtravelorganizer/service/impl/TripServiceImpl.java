@@ -1,6 +1,7 @@
 package mk.ukim.finki.backendtravelorganizer.service.impl;
 
 import mk.ukim.finki.backendtravelorganizer.model.*;
+import mk.ukim.finki.backendtravelorganizer.model.dto.TripCreateDto;
 import mk.ukim.finki.backendtravelorganizer.model.dto.TripDto;
 import mk.ukim.finki.backendtravelorganizer.model.exceptions.*;
 import mk.ukim.finki.backendtravelorganizer.repository.*;
@@ -17,13 +18,15 @@ public class TripServiceImpl implements TripService {
     private final ExpenseRepository expenseRepository;
     private final ActivityRepository  activityRepository;
     private final TransportationRepository transportationRepository;
+    private final UserRepository userRepository;
 
-    public TripServiceImpl(TripRepository tripRepository, AccommodationRepository accommodationRepository, ExpenseRepository expenseRepository, ActivityRepository activityRepository, TransportationRepository transportationRepository) {
+    public TripServiceImpl(TripRepository tripRepository, AccommodationRepository accommodationRepository, ExpenseRepository expenseRepository, ActivityRepository activityRepository, TransportationRepository transportationRepository, UserRepository userRepository) {
         this.tripRepository = tripRepository;
         this.accommodationRepository = accommodationRepository;
         this.expenseRepository = expenseRepository;
         this.activityRepository = activityRepository;
         this.transportationRepository = transportationRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Trip> getAllTrips() {
@@ -86,6 +89,26 @@ public class TripServiceImpl implements TripService {
             });
         }
         return tripRepository.save(trip);
+    }
+
+    @Override
+    public Trip createTrip(TripCreateDto dto, String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException();
+        }
+
+        Trip trip = new Trip();
+        trip.setName(dto.getName());
+        trip.setStartDate(dto.getStartDate());
+        trip.setEndDate(dto.getEndDate());
+        trip.setBudget(dto.getBudget());
+        trip.setUser(user);
+
+        return tripRepository.save(trip);
+    }
+    public List<Trip> getTripsByUser(String username) {
+        return tripRepository.findByUserUsername(username);
     }
 
 

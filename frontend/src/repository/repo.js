@@ -1,12 +1,15 @@
-import axios from '../custom-axios/axios'
+import instance from '../custom-axios/axios'
 
 const TravelAppService = {
     fetchAccommodations: () => {
-        return axios.get("/accommodations");
+        return instance.get("/accommodations/all");
     },
     fetchTrips: () => {
-        return axios.get("/trips");
-    }
+        return instance.get("/trips");
+    },
+     createTrip: (tripDto) => {
+    return instance.post('/trips/create', tripDto);
+  },
 }
 
 export default TravelAppService;

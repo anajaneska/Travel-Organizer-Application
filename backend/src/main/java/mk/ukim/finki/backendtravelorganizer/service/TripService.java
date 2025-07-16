@@ -1,6 +1,7 @@
 package mk.ukim.finki.backendtravelorganizer.service;
 
 import mk.ukim.finki.backendtravelorganizer.model.Trip;
+import mk.ukim.finki.backendtravelorganizer.model.dto.TripCreateDto;
 import mk.ukim.finki.backendtravelorganizer.model.dto.TripDto;
 
 import java.util.List;
@@ -12,4 +13,6 @@ public interface TripService {
     Trip saveTrip(Trip trip);
     void deleteTrip(Long id);
     Trip editTrip(Long id, TripDto dto);
+    Trip createTrip(TripCreateDto dto, String username);
+    List<Trip> getTripsByUser(String username);
 }

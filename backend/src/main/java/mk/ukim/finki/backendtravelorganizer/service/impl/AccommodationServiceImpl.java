@@ -80,5 +80,10 @@ public class AccommodationServiceImpl implements AccommodationService {
         return accommodationRepository.findByTripId(tripId);
     }
 
+    @Override
+    public List<Accommodation> getAllAvailableAccommodations() {
+        return accommodationRepository.findAll();
+    }
+
 
 }

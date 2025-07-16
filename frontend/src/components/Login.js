@@ -8,12 +8,20 @@ export default function Login() {
     e.preventDefault();
     try {
       const response = await instance.post('/auth/login', form);
-      const token = response.data; // assuming backend returns JWT token as plain text or JSON string
+      const token = response.data;
+      console.log("Received JWT token:", token);
+
       localStorage.setItem('jwt', token);
       alert("Logged in successfully");
-      // optionally redirect or update UI after login
+
+      // Optional: redirect after login
+      // window.location.href = "/dashboard";
+
+      // Clear form
+      setForm({ username: '', password: '' });
     } catch (err) {
       alert("Login failed");
+      console.error("Login error:", err);
     }
   };
 
@@ -23,14 +31,19 @@ export default function Login() {
       <input
         type="text"
         placeholder="Username"
+        value={form.username}
         onChange={(e) => setForm({ ...form, username: e.target.value })}
+        required
       />
       <input
         type="password"
         placeholder="Password"
+        value={form.password}
         onChange={(e) => setForm({ ...form, password: e.target.value })}
+        required
       />
       <button type="submit">Login</button>
     </form>
   );
 }
+

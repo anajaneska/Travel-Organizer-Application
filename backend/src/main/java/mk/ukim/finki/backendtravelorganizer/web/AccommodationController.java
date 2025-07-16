@@ -28,6 +28,11 @@ public class AccommodationController {
     public ResponseEntity<List<Accommodation>> getAllAccommodations(@RequestBody AccommodationSearchDto dto) {
         return ResponseEntity.ok(accommodationService.getAllAccommodations(dto.location(), dto.checkInDate(), dto.checkOutDate()));
     }
+    @GetMapping("/all")
+    public ResponseEntity<List<Accommodation>> getAllAvailableAccommodations(){
+        List<Accommodation> accommodations = accommodationService.getAllAvailableAccommodations();
+        return ResponseEntity.ok(accommodations);
+    }
 
     @PostMapping
     public ResponseEntity<Accommodation> createListing(@RequestBody AccommodationCreateDto dto) {

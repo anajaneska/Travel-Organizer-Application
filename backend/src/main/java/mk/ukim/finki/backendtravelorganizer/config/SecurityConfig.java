@@ -3,6 +3,7 @@ package mk.ukim.finki.backendtravelorganizer.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -39,11 +40,12 @@ public class SecurityConfig {
                .cors(Customizer.withDefaults())
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/auth/login","/api/auth/register","/api/accommodations/all")
-                        .permitAll()
+                        .requestMatchers("/api/auth/login","/api/auth/register","/api/accommodations/all").permitAll()
                         .requestMatchers("/api/trips/**").authenticated()
+                        .requestMatchers("/api/accommodations/{id}").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/accommodations/*/trip/*").permitAll()
                         .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults()) //za postman
+                //.httpBasic(Customizer.withDefaults()) //za postman
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                .build();

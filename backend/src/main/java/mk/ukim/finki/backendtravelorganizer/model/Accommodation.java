@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -24,13 +25,17 @@ public class Accommodation {
     private Long id;
 
     private String location;
+
     @Column(name = "cost_per_night")
     private double costPerNight; // accommodation listing
 
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
+
     @Column(name = "total_cost")
     private double totalCost;  // per booking
+
+    private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "original_listing_id")
@@ -45,20 +50,22 @@ public class Accommodation {
     @JsonBackReference
     private Trip trip;
 
+
     // constructor for creating listings without booking
-    public Accommodation(String location, double costPerNight) {
+    public Accommodation(String location, double costPerNight, String imageUrl) {
         this.location = location;
         this.costPerNight = costPerNight;
+        this.imageUrl = imageUrl;
     }
 
     // booking constructor
-    public Accommodation(String location, double costPerNight, LocalDate checkInDate, LocalDate checkOutDate, Trip trip) {
+    public Accommodation(String location, double costPerNight, LocalDate checkInDate, LocalDate checkOutDate, Trip trip, String imageUrl) {
         this.location = location;
         this.costPerNight = costPerNight;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
         this.trip = trip;
         this.totalCost = ChronoUnit.DAYS.between(checkInDate, checkOutDate) * costPerNight;
+        this.imageUrl = imageUrl;
     }
-
 }

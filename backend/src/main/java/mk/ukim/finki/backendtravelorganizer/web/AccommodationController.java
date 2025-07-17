@@ -34,10 +34,10 @@ public class AccommodationController {
         return ResponseEntity.ok(accommodations);
     }
 
-    @PostMapping
+/*    @PostMapping
     public ResponseEntity<Accommodation> createListing(@RequestBody AccommodationCreateDto dto) {
         return ResponseEntity.ok(accommodationService.createListing(dto.location(), dto.costPerNight()));
-    }
+    }*/
 
     @PutMapping("/{id}")
     public ResponseEntity<Accommodation> editListing(@PathVariable Long id, @RequestBody AccommodationCreateDto dto) {

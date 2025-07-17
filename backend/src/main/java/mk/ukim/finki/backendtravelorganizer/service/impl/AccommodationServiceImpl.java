@@ -28,8 +28,8 @@ public class AccommodationServiceImpl implements AccommodationService {
         return accommodationRepository.findAvailable(location, checkInDate, checkOutDate);
     }
 
-    public Accommodation createListing(String location, double costPerNight) {
-        Accommodation accommodation = new Accommodation(location, costPerNight);
+    public Accommodation createListing(String location, double costPerNight,String imageUrl) {
+        Accommodation accommodation = new Accommodation(location, costPerNight, imageUrl);
         return accommodationRepository.save(accommodation);
     }
 
@@ -63,12 +63,20 @@ public class AccommodationServiceImpl implements AccommodationService {
         Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(TripDoesNotExistException::new);
 
+        boolean overlaps = listing.getBookings().stream().anyMatch(booking ->
+                !(checkOut.isBefore(booking.getCheckInDate()) || checkIn.isAfter(booking.getCheckOutDate()))
+        );
+        if (overlaps) {
+            throw new IllegalArgumentException("Selected dates overlap with an existing booking");
+        }
+
         Accommodation booking = new Accommodation(
                 listing.getLocation(),
                 listing.getCostPerNight(),
                 checkIn,
                 checkOut,
-                trip
+                trip,
+                listing.getImageUrl()
         );
         booking.setOriginalListing(listing);
         trip.addAccommodation(booking);

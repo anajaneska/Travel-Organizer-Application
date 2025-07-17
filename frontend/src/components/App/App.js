@@ -11,6 +11,7 @@ import Register from '../Register.js';
 import CreateTrip from '../Trips/CreateTrip.js';
 import { Navigate } from 'react-router-dom';
 import TripsList from '../Trips/TripList.js';
+import AccommodationDetails from '../Accommodations/AccommodationDetails.js';
 
 class App extends Component {
   constructor(props) {
@@ -82,6 +83,7 @@ class App extends Component {
               )
             }
           />
+          <Route path="/accommodations/:id" element={<AccommodationDetails />} />
         </Routes>
       </Router>
     );

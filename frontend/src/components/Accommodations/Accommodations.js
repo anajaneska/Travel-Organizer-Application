@@ -1,18 +1,26 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import './Accommodations.css';
 
-export default function Accommodations({ accommodations }) {
+const Accommodations = ({ accommodations }) => {
   return (
-    <div>
+    <div className="accommodations-container">
       <h2>Available Accommodations</h2>
-      <ul>
+      <ul className="accommodation-list">
         {accommodations.map(acc => (
-          <li key={acc.id}>
-            <strong>{acc.name}</strong> - {acc.location} - ${acc.price}
+          <li key={acc.id} className="accommodation-item">
+            <Link to={`/accommodations/${acc.id}`}>
+              <strong>{acc.name}</strong> - {acc.location} - ${acc.price}
+            </Link>
           </li>
         ))}
       </ul>
     </div>
   );
-}
+};
+
+export default Accommodations;
+
+
 
 

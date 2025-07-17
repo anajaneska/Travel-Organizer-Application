@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AccommodationService {
     List<Accommodation> getAllAccommodations(String location, LocalDate checkIn, LocalDate checkOut);
-    Accommodation createListing(String location, double costPerNight);
+    Accommodation createListing(String location, double costPerNight, String imageUrl);
     Accommodation editListing(Long id, String location, double pricePerNight);
     Accommodation getAccommodationById(Long id);
     Accommodation saveAccommodation(Accommodation accommodation);

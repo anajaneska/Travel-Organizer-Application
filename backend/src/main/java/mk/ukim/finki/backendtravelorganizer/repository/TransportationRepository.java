@@ -11,23 +11,23 @@ import java.util.List;
 public interface TransportationRepository extends JpaRepository<Transportation,Long> {
     List<Transportation> findByTripId(Long tripId);
 
-    @Query("""
-    SELECT l FROM Transportation l
-    WHERE l.originalListing IS NULL
-      AND l.startLocation = :startLocation
-      AND l.destination = :destination
-      AND l.departureDate = :departureDate
-      AND l.totalSeats >= :wantedSeats
-      AND (
-          l.totalSeats - COALESCE(
-              (SELECT SUM(b.seatsBooked) FROM Transportation b WHERE b.originalListing = l), 0
-          )
-      ) >= :wantedSeats
-""")
-    List<Transportation> findAvailableListingsWithEnoughSeats(
-            @Param("startLocation") String startLocation,
-            @Param("destination") String destination,
-            @Param("departureDate") LocalDate departureDate,
-            @Param("wantedSeats") int wantedSeats);
+//    @Query("""
+//    SELECT l FROM Transportation l
+//    WHERE l.originalListing IS NULL
+//      AND l.startLocation = :startLocation
+//      AND l.destination = :destination
+//      AND l.departureDate = :departureDate
+//      AND l.totalSeats >= :wantedSeats
+//      AND (
+//          l.totalSeats - COALESCE(
+//              (SELECT SUM(b.seatsBooked) FROM Transportation b WHERE b.originalListing = l), 0
+//          )
+//      ) >= :wantedSeats
+//""")
+//    List<Transportation> findAvailableListingsWithEnoughSeats(
+//            @Param("startLocation") String startLocation,
+//            @Param("destination") String destination,
+//            @Param("departureDate") LocalDate departureDate,
+//            @Param("wantedSeats") int wantedSeats);
 
 }

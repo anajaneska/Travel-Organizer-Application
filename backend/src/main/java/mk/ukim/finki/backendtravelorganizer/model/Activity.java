@@ -24,19 +24,23 @@ public class Activity {
     private String name;
     private String description;
     private String location;
-    private LocalDate startDate;
-    private LocalTime startTime;
+    private LocalDateTime startTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trip_id")
     @JsonBackReference
     private Trip trip;
 
-    public Activity(String name, String description, String location, LocalDate startDate, LocalTime startTime) {
+    public Activity(String name,String location, LocalDateTime startTime) {
+        this.name = name;
+        this.location = location;
+        this.startTime = startTime;
+    }
+
+    public Activity(String name, String description, String location, LocalDateTime startTime) {
         this.name = name;
         this.description = description;
         this.location = location;
-        this.startDate = startDate;
         this.startTime = startTime;
     }
 }

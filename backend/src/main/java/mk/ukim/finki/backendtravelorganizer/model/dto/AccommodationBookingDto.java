@@ -6,5 +6,6 @@ import java.time.LocalDate;
 
 public record AccommodationBookingDto(
         @JsonProperty("checkIn") LocalDate checkInDate,
-        @JsonProperty("checkOut") LocalDate checkOutDate
+        @JsonProperty("checkOut") LocalDate checkOutDate,
+        @JsonProperty("totalCost")Double totalCost
 ) {}

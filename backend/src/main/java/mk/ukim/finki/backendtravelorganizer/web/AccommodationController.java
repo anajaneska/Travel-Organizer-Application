@@ -24,10 +24,10 @@ public class AccommodationController {
         this.tripService = tripService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<Accommodation>> getAllAccommodations(@RequestBody AccommodationSearchDto dto) {
-        return ResponseEntity.ok(accommodationService.getAllAccommodations(dto.location(), dto.checkInDate(), dto.checkOutDate()));
-    }
+//    @GetMapping
+//    public ResponseEntity<List<Accommodation>> getAllAccommodations(@RequestBody AccommodationSearchDto dto) {
+//        return ResponseEntity.ok(accommodationService.getAllAccommodations(dto.location(), dto.checkInDate(), dto.checkOutDate()));
+//    }
     @GetMapping("/all")
     public ResponseEntity<List<Accommodation>> getAllAvailableAccommodations(){
         List<Accommodation> accommodations = accommodationService.getAllAvailableAccommodations();
@@ -46,7 +46,7 @@ public class AccommodationController {
 
     @PostMapping("{id}/trip/{tripId}")
     public ResponseEntity<Accommodation> addAccommodationToTrip(@PathVariable Long id, @PathVariable Long tripId, @RequestBody AccommodationBookingDto dto) {
-        Accommodation savedAccommodation = accommodationService.addAccommodationToTrip(id, tripId, dto.checkInDate(), dto.checkOutDate());
+        Accommodation savedAccommodation = accommodationService.addAccommodationToTrip(id, tripId, dto.checkInDate(), dto.checkOutDate(), dto.totalCost());
         return ResponseEntity.status(HttpStatus.CREATED).body(savedAccommodation);
     }
 

@@ -28,9 +28,9 @@ public class TransportationServiceImpl implements TransportationService {
         this.fileService = fileService;
     }
 
-    public List<Transportation> getAllTransportations(TransportationSearchDto dto) {
-        return transportationRepository.findAvailableListingsWithEnoughSeats(dto.startLocation(), dto.destination(), dto.departureDate(), dto.wantedSeats());
-    }
+//    public List<Transportation> getAllTransportations(TransportationSearchDto dto) {
+//        return transportationRepository.findAvailableListingsWithEnoughSeats(dto.startLocation(), dto.destination(), dto.departureDate(), dto.wantedSeats());
+//    }
 
     public Transportation getTransportationById(Long id) {
         return transportationRepository.findById(id).orElseThrow(TransportationDoesNotExistException::new);
@@ -44,13 +44,10 @@ public class TransportationServiceImpl implements TransportationService {
         l.setStartLocation(dto.startLocation());
         l.setDestination(dto.destination());
 
-        l.setDepartureDate(dto.departureDate());
         l.setDepartureTime(dto.departureTime());
-        l.setArrivalDate(dto.arrivalDate());
         l.setArrivalTime(dto.arrivalTime());
 
         l.setCost(dto.cost());
-        l.setTotalSeats(dto.totalSeats());
         return transportationRepository.save(l);
     }
 
@@ -66,23 +63,16 @@ public class TransportationServiceImpl implements TransportationService {
         l.setStartLocation(dto.startLocation());
         l.setDestination(dto.destination());
 
-        l.setDepartureDate(dto.departureDate());
         l.setDepartureTime(dto.departureTime());
-        l.setArrivalDate(dto.arrivalDate());
         l.setArrivalTime(dto.arrivalTime());
 
         l.setCost(dto.cost());
-        l.setTotalSeats(dto.totalSeats());
         return transportationRepository.save(l);
     }
 
     public Transportation bookTransport(Long id, Long tripId, TransportationBookingDto dto) {
         Transportation listing = transportationRepository.findById(id)
                 .orElseThrow(TransportationDoesNotExistException::new);
-
-        if (listing.getSeatsAvailable()<dto.wantedSeats()) {
-            throw new IllegalStateException("Not enough available seats.");
-        }
 
         Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(TripDoesNotExistException::new);
@@ -91,13 +81,10 @@ public class TransportationServiceImpl implements TransportationService {
         booking.setType(listing.getType());
         booking.setStartLocation(listing.getStartLocation());
         booking.setDestination(listing.getDestination());
-        booking.setDepartureDate(listing.getDepartureDate());
         booking.setDepartureTime(listing.getDepartureTime());
-        booking.setArrivalDate(listing.getArrivalDate());
         booking.setArrivalTime(listing.getArrivalTime());
         booking.setCost(listing.getCost() * dto.wantedSeats());
-        booking.setSeatsBooked(dto.wantedSeats());
-        booking.setOriginalListing(listing);
+
         booking.setTrip(trip);
 
         trip.addTransportation(booking);
@@ -107,35 +94,32 @@ public class TransportationServiceImpl implements TransportationService {
 
     private static Transportation getTransportation(TransportationBookingDto dto, Transportation listing, Trip trip) {
         Transportation b = new Transportation();
-        b.setOriginalListing(listing);
-        b.setSeatsBooked(dto.wantedSeats());
+
         b.setCost(listing.getCost() * dto.wantedSeats());
         b.setTrip(trip);
 
         b.setType(listing.getType());
         b.setStartLocation(listing.getStartLocation());
         b.setDestination(listing.getDestination());
-        b.setDepartureDate(listing.getDepartureDate());
         b.setDepartureTime(listing.getDepartureTime());
-        b.setArrivalDate(listing.getArrivalDate());
         b.setArrivalTime(listing.getArrivalTime());
         return b;
     }
 
-    @Override
-    public List<Transportation> getTransportationByTripId(Long tripId) {
-        return transportationRepository.findByTripId(tripId);
-    }
+//    @Override
+//    public List<Transportation> getTransportationByTripId(Long tripId) {
+//        return transportationRepository.findByTripId(tripId);
+//    }
 
-    @Override
-    public Transportation uploadTicket(Long bookingId, MultipartFile file) {
-        Transportation booking = transportationRepository.findById(bookingId)
-                .orElseThrow(TransportationDoesNotExistException::new);
-
-        if (booking.getOriginalListing() == null)
-            throw new IllegalArgumentException("Cannot upload ticket to a listing");
-
-        booking.setTicketInfo(fileService.saveFile(file));
-        return transportationRepository.save(booking);
-    }
+//    @Override
+//    public Transportation uploadTicket(Long bookingId, MultipartFile file) {
+//        Transportation booking = transportationRepository.findById(bookingId)
+//                .orElseThrow(TransportationDoesNotExistException::new);
+//
+//        if (booking.getOriginalListing() == null)
+//            throw new IllegalArgumentException("Cannot upload ticket to a listing");
+//
+//        booking.setTicketInfo(fileService.saveFile(file));
+//        return transportationRepository.save(booking);
+//    }
 }

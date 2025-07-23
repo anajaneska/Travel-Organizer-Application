@@ -12,18 +12,16 @@ public class ActivityDto {
     private String name;
     private String description;
     private String location;
-    private LocalDate startDate;
-    private LocalTime startTime;
+    private LocalDateTime startTime;
     private Long trip;
 
     public ActivityDto() {
     }
 
-    public ActivityDto(String name, String description, String location, LocalDate startDate, LocalTime startTime, Long trip) {
+    public ActivityDto(String name, String description, String location, LocalDateTime startTime, Long trip) {
         this.name = name;
         this.description = description;
         this.location = location;
-        this.startDate = startDate;
         this.startTime = startTime;
         this.trip = trip;
     }

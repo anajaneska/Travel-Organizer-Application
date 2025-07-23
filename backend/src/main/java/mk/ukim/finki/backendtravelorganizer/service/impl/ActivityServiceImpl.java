@@ -24,12 +24,12 @@ public class ActivityServiceImpl implements ActivityService {
         this.tripRepository = tripRepository;
     }
 
-    @Override
-    public List<Activity> getAllActivities(ActivitySearchDto dto) {
-        return activityRepository.searchActivities(
-                dto.name(), dto.description(), dto.location(), dto.startDate()
-        );
-    }
+//    @Override
+//    public List<Activity> getAllActivities(ActivitySearchDto dto) {
+//        return activityRepository.searchActivities(
+//                dto.name(), dto.description(), dto.location()
+//        );
+//    }
 
     @Override
     public Activity getActivityById(Long id) {
@@ -63,7 +63,7 @@ public class ActivityServiceImpl implements ActivityService {
     public Activity editActivity(Long id, ActivityDto dto) {
         Trip trip = this.tripRepository.findById(dto.getTrip())
                 .orElseThrow(TripDoesNotExistException::new);
-        Activity activity = new Activity(dto.getName(), dto.getDescription(), dto.getLocation(), dto.getStartDate(), dto.getStartTime());
+        Activity activity = new Activity(dto.getName(), dto.getDescription(), dto.getLocation(), dto.getStartTime());
         this.activityRepository.save(activity);
         return activity;
     }

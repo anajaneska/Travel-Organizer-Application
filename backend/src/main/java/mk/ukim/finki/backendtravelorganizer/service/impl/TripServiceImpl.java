@@ -15,15 +15,13 @@ import java.util.Optional;
 public class TripServiceImpl implements TripService {
     private final TripRepository tripRepository;
     private final AccommodationRepository accommodationRepository;
-    private final ExpenseRepository expenseRepository;
     private final ActivityRepository  activityRepository;
     private final TransportationRepository transportationRepository;
     private final UserRepository userRepository;
 
-    public TripServiceImpl(TripRepository tripRepository, AccommodationRepository accommodationRepository, ExpenseRepository expenseRepository, ActivityRepository activityRepository, TransportationRepository transportationRepository, UserRepository userRepository) {
+    public TripServiceImpl(TripRepository tripRepository, AccommodationRepository accommodationRepository, ActivityRepository activityRepository, TransportationRepository transportationRepository, UserRepository userRepository) {
         this.tripRepository = tripRepository;
         this.accommodationRepository = accommodationRepository;
-        this.expenseRepository = expenseRepository;
         this.activityRepository = activityRepository;
         this.transportationRepository = transportationRepository;
         this.userRepository = userRepository;
@@ -78,14 +76,6 @@ public class TripServiceImpl implements TripService {
                 Transportation transportation = transportationRepository.findById(transportationDto.getId())
                         .orElseThrow(TransportationDoesNotExistException::new);
                 trip.addTransportation(transportation);
-            });
-        }
-        if (dto.getExpenses() != null) {
-            trip.getExpenses().clear();
-            dto.getExpenses().forEach(expenseDto -> {
-                Expense expense = expenseRepository.findById(expenseDto.getId())
-                        .orElseThrow(ExpenseDoesNotExistException::new);
-                trip.addExpense(expense);
             });
         }
         return tripRepository.save(trip);

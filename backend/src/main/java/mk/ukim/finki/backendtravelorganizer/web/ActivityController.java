@@ -38,7 +38,6 @@ public class ActivityController {
         updatedActivity.setName(activity.getName());
         updatedActivity.setDescription(activity.getDescription());
         updatedActivity.setLocation(activity.getLocation());
-        updatedActivity.setStartDate(activity.getStartDate());
         updatedActivity.setStartTime(activity.getStartTime());
         activityService.saveActivity(updatedActivity);
         return ResponseEntity.ok(updatedActivity);

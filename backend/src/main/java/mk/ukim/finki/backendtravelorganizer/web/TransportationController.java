@@ -28,10 +28,10 @@ public class TransportationController {
     }
 
 
-    @GetMapping
-    public List<Transportation> getAllTransportations(@RequestBody TransportationSearchDto dto) {
-        return transportationService.getAllTransportations(dto);
-    }
+//    @GetMapping
+//    public List<Transportation> getAllTransportations(@RequestBody TransportationSearchDto dto) {
+//        return transportationService.getAllTransportations(dto);
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Transportation> getTransportationById(@PathVariable Long id) {
@@ -64,31 +64,15 @@ public class TransportationController {
         return ResponseEntity.ok(transportationService.saveTransportation(id, dto));
     }
 
-    @GetMapping("/trip/{tripId}")
-    public ResponseEntity<List<Transportation>> getTransportationByTripId(@PathVariable Long tripId) {
-        List<Transportation> transportations = transportationService.getTransportationByTripId(tripId);
-        return ResponseEntity.ok(transportations);
-    }
-    @PostMapping("/{id}/upload-ticket")
-    public ResponseEntity<Transportation> uploadTicket(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
-        Transportation updatedTransportation = transportationService.uploadTicket(id, file);
-        return ResponseEntity.ok(updatedTransportation);
-    }
-    @GetMapping("/{id}/ticket")
-    public ResponseEntity<Resource> getTicket(@PathVariable Long id) {
-        Transportation transportation = transportationService.getTransportationById(id);
-        Path filePath = Paths.get(transportation.getTicketInfo());
-        try {
-            Resource resource = new UrlResource(filePath.toUri());
-            if (resource.exists() || resource.isReadable()) {
-                return ResponseEntity.ok()
-                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filePath.getFileName() + "\"")
-                        .body(resource);
-            } else {
-                throw new RuntimeException("File not found or not readable.");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Error reading file.", e);
-        }
-    }
+//    @GetMapping("/trip/{tripId}")
+//    public ResponseEntity<List<Transportation>> getTransportationByTripId(@PathVariable Long tripId) {
+//        //List<Transportation> transportations = transportationService.getTransportationByTripId(tripId);
+//        return ResponseEntity.ok(transportations);
+//    }
+//    @PostMapping("/{id}/upload-ticket")
+//    public ResponseEntity<Transportation> uploadTicket(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+//        Transportation updatedTransportation = transportationService.uploadTicket(id, file);
+//        return ResponseEntity.ok(updatedTransportation);
+//    }
+
 }

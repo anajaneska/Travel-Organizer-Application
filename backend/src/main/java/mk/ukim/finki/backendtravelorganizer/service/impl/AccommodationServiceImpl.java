@@ -24,19 +24,18 @@ public class AccommodationServiceImpl implements AccommodationService {
         this.tripRepository = tripRepository;
     }
 
-    public List<Accommodation> getAllAccommodations(String location, LocalDate checkInDate, LocalDate checkOutDate) {
-        return accommodationRepository.findAvailable(location, checkInDate, checkOutDate);
-    }
+//    public List<Accommodation> getAllAccommodations(String location, LocalDate checkInDate, LocalDate checkOutDate) {
+//        return accommodationRepository.findAvailable(location, checkInDate, checkOutDate);
+//    }
 
-    public Accommodation createListing(String location, double costPerNight,String imageUrl) {
-        Accommodation accommodation = new Accommodation(location, costPerNight, imageUrl);
-        return accommodationRepository.save(accommodation);
-    }
+//    public Accommodation createListing(String location, double costPerNight,String imageUrl) {
+//        Accommodation accommodation = new Accommodation(location, costPerNight, imageUrl);
+//        return accommodationRepository.save(accommodation);
+//    }
 
     public Accommodation editListing(Long id, String location, double costPerNight) {
         Accommodation accommodation = accommodationRepository.findById(id).orElseThrow(AccommodationDoesNotExistException::new);
         accommodation.setLocation(location);
-        accommodation.setCostPerNight(costPerNight);
         this.accommodationRepository.save(accommodation);
         return accommodation;
     }
@@ -53,7 +52,7 @@ public class AccommodationServiceImpl implements AccommodationService {
         accommodationRepository.deleteById(id);
     }
 
-    public Accommodation addAccommodationToTrip(Long id, Long tripId, LocalDate checkIn, LocalDate checkOut) {
+    public Accommodation addAccommodationToTrip(Long id, Long tripId, LocalDate checkIn, LocalDate checkOut, Double totalCost) {
         Accommodation listing = accommodationRepository.findById(id)
                 .orElseThrow(AccommodationDoesNotExistException::new);
 
@@ -63,22 +62,14 @@ public class AccommodationServiceImpl implements AccommodationService {
         Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(TripDoesNotExistException::new);
 
-        boolean overlaps = listing.getBookings().stream().anyMatch(booking ->
-                !(checkOut.isBefore(booking.getCheckInDate()) || checkIn.isAfter(booking.getCheckOutDate()))
-        );
-        if (overlaps) {
-            throw new IllegalArgumentException("Selected dates overlap with an existing booking");
-        }
 
         Accommodation booking = new Accommodation(
                 listing.getLocation(),
-                listing.getCostPerNight(),
                 checkIn,
                 checkOut,
                 trip,
-                listing.getImageUrl()
+                totalCost
         );
-        booking.setOriginalListing(listing);
         trip.addAccommodation(booking);
         return accommodationRepository.save(booking);
     }

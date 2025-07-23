@@ -24,27 +24,28 @@ public class AccommodationServiceImpl implements AccommodationService {
         this.tripRepository = tripRepository;
     }
 
-//    public List<Accommodation> getAllAccommodations(String location, LocalDate checkInDate, LocalDate checkOutDate) {
-//        return accommodationRepository.findAvailable(location, checkInDate, checkOutDate);
-//    }
-
-//    public Accommodation createListing(String location, double costPerNight,String imageUrl) {
-//        Accommodation accommodation = new Accommodation(location, costPerNight, imageUrl);
-//        return accommodationRepository.save(accommodation);
-//    }
-
-    public Accommodation editListing(Long id, String location, double costPerNight) {
-        Accommodation accommodation = accommodationRepository.findById(id).orElseThrow(AccommodationDoesNotExistException::new);
-        accommodation.setLocation(location);
-        this.accommodationRepository.save(accommodation);
-        return accommodation;
+    public List<Accommodation> getAllAccommodations() {
+        return accommodationRepository.findAll();
     }
 
     public Accommodation getAccommodationById(Long id) {
-        return accommodationRepository.findById(id).orElseThrow(AccommodationDoesNotExistException::new);
+        return accommodationRepository.findById(id)
+                .orElseThrow(AccommodationDoesNotExistException::new);
     }
 
-    public Accommodation saveAccommodation(Accommodation accommodation) {
+    public Accommodation saveAccommodation(Long tripId, Accommodation accommodation) {
+        Trip trip = tripRepository.findById(tripId)
+                .orElseThrow(TripDoesNotExistException::new);
+        accommodation.setTrip(trip);
+        return accommodationRepository.save(accommodation);
+    }
+    public Accommodation editAccommodation(Long id, String location, LocalDate checkIn, LocalDate checkOut, Double totalCost) {
+        Accommodation accommodation = accommodationRepository.findById(id)
+                .orElseThrow(AccommodationDoesNotExistException::new);
+        accommodation.setLocation(location);
+        accommodation.setCheckInDate(checkIn);
+        accommodation.setCheckOutDate(checkOut);
+        accommodation.setTotalCost(totalCost);
         return accommodationRepository.save(accommodation);
     }
 
@@ -52,37 +53,9 @@ public class AccommodationServiceImpl implements AccommodationService {
         accommodationRepository.deleteById(id);
     }
 
-    public Accommodation addAccommodationToTrip(Long id, Long tripId, LocalDate checkIn, LocalDate checkOut, Double totalCost) {
-        Accommodation listing = accommodationRepository.findById(id)
-                .orElseThrow(AccommodationDoesNotExistException::new);
-
-        long nights = ChronoUnit.DAYS.between(checkIn, checkOut);
-        if (nights <= 0) throw new IllegalArgumentException("Invalid date range");
-
-        Trip trip = tripRepository.findById(tripId)
-                .orElseThrow(TripDoesNotExistException::new);
-
-
-        Accommodation booking = new Accommodation(
-                listing.getLocation(),
-                checkIn,
-                checkOut,
-                trip,
-                totalCost
-        );
-        trip.addAccommodation(booking);
-        return accommodationRepository.save(booking);
-    }
-
     @Override
     public List<Accommodation> getAccommodationsByTripId(Long tripId) {
         return accommodationRepository.findByTripId(tripId);
     }
-
-    @Override
-    public List<Accommodation> getAllAvailableAccommodations() {
-        return accommodationRepository.findAll();
-    }
-
 
 }

@@ -100,6 +100,4 @@ public class TripServiceImpl implements TripService {
     public List<Trip> getTripsByUser(String username) {
         return tripRepository.findByUserUsername(username);
     }
-
-
 }

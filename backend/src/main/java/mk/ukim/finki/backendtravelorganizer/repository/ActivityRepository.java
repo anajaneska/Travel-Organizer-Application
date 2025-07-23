@@ -4,22 +4,13 @@ import mk.ukim.finki.backendtravelorganizer.model.Activity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
 import java.time.LocalDate;
 
 import java.util.List;
 
+@Repository
 public interface ActivityRepository extends JpaRepository<Activity,Long> {
     List<Activity> findByTripId(Long tripId);
-
-//    @Query("""
-//    SELECT a FROM Activity a
-//    WHERE (:name IS NULL OR LOWER(a.name) LIKE LOWER(CONCAT('%', :name, '%')))
-//      AND (:description IS NULL OR LOWER(a.description) LIKE LOWER(CONCAT('%', :description, '%')))
-//      AND (:location IS NULL OR LOWER(a.location) LIKE LOWER(CONCAT('%', :location, '%')))
-//""")
-//    List<Activity> searchActivities(
-//            @Param("name") String name,
-//            @Param("description") String description,
-//            @Param("location") String location
-//    );
 }

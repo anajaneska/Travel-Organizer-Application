@@ -30,7 +30,7 @@ public class AccommodationController {
 //    }
     @GetMapping("/all")
     public ResponseEntity<List<Accommodation>> getAllAvailableAccommodations(){
-        List<Accommodation> accommodations = accommodationService.getAllAvailableAccommodations();
+        List<Accommodation> accommodations = accommodationService.getAllAccommodations();
         return ResponseEntity.ok(accommodations);
     }
 
@@ -39,16 +39,16 @@ public class AccommodationController {
         return ResponseEntity.ok(accommodationService.createListing(dto.location(), dto.costPerNight()));
     }*/
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Accommodation> editListing(@PathVariable Long id, @RequestBody AccommodationCreateDto dto) {
-        return ResponseEntity.ok(accommodationService.editListing(id, dto.location(), dto.costPerNight()));
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Accommodation> editListing(@PathVariable Long id, @RequestBody AccommodationCreateDto dto) {
+//        return ResponseEntity.ok(accommodationService.editListing(id, dto.location(), dto.costPerNight()));
+//    }
 
-    @PostMapping("{id}/trip/{tripId}")
-    public ResponseEntity<Accommodation> addAccommodationToTrip(@PathVariable Long id, @PathVariable Long tripId, @RequestBody AccommodationBookingDto dto) {
-        Accommodation savedAccommodation = accommodationService.addAccommodationToTrip(id, tripId, dto.checkInDate(), dto.checkOutDate(), dto.totalCost());
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedAccommodation);
-    }
+//    @PostMapping("{id}/trip/{tripId}")
+//    public ResponseEntity<Accommodation> addAccommodationToTrip(@PathVariable Long id, @PathVariable Long tripId, @RequestBody AccommodationBookingDto dto) {
+//        Accommodation savedAccommodation = accommodationService.addAccommodationToTrip(id, tripId, dto.checkInDate(), dto.checkOutDate(), dto.totalCost());
+//        return ResponseEntity.status(HttpStatus.CREATED).body(savedAccommodation);
+//    }
 
     @GetMapping("/trip/{tripId}")
     public ResponseEntity<List<Accommodation>> getAccommodationsByTrip(@PathVariable Long tripId) {

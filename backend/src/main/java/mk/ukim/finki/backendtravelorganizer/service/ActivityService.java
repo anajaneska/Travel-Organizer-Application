@@ -8,11 +8,9 @@ import mk.ukim.finki.backendtravelorganizer.model.dto.ActivitySearchDto;
 import java.util.List;
 
 public interface ActivityService {
-    //List<Activity> getAllActivities(ActivitySearchDto dto);
     Activity getActivityById(Long id);
-    Activity saveActivity(Activity activity);
+    Activity saveActivity(Long tripId, Activity activity);
     void deleteActivity(Long id);
-    Activity addActivityToTrip(Long tripId, Activity activity);
     List<Activity> getActivitiesByTripId(Long tripId);
     Activity editActivity(Long id, ActivityDto dto);
 }

@@ -24,12 +24,10 @@ public class ActivityServiceImpl implements ActivityService {
         this.tripRepository = tripRepository;
     }
 
-//    @Override
-//    public List<Activity> getAllActivities(ActivitySearchDto dto) {
-//        return activityRepository.searchActivities(
-//                dto.name(), dto.description(), dto.location()
-//        );
-//    }
+    @Override
+    public List<Activity> getActivitiesByTripId(Long tripId) {
+        return activityRepository.findByTripId(tripId);
+    }
 
     @Override
     public Activity getActivityById(Long id) {
@@ -38,7 +36,10 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public Activity saveActivity(Activity activity) {
+    public Activity saveActivity(Long tripId,Activity activity) {
+        Trip trip = tripRepository.findById(tripId)
+                .orElseThrow(TripDoesNotExistException::new);
+        activity.setTrip(trip);
         return activityRepository.save(activity);
     }
 
@@ -48,23 +49,19 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public Activity addActivityToTrip(Long tripId, Activity activity) {
-        Trip trip = tripRepository.findById(tripId).orElseThrow(TripDoesNotExistException::new);
-        trip.addActivity(activity);
-        activityRepository.save(activity);
-        return activity;
-    }
-    @Override
-    public List<Activity> getActivitiesByTripId(Long tripId) {
-        return activityRepository.findByTripId(tripId);
-    }
-
-    @Override
     public Activity editActivity(Long id, ActivityDto dto) {
-        Trip trip = this.tripRepository.findById(dto.getTrip())
+        Activity activity = activityRepository.findById(id)
+                .orElseThrow(ActivityDoesNotExistException::new);
+
+        Trip trip = tripRepository.findById(dto.getTrip())
                 .orElseThrow(TripDoesNotExistException::new);
-        Activity activity = new Activity(dto.getName(), dto.getDescription(), dto.getLocation(), dto.getStartTime());
-        this.activityRepository.save(activity);
-        return activity;
+
+        activity.setName(dto.getName());
+        activity.setDescription(dto.getDescription());
+        activity.setLocation(dto.getLocation());
+        activity.setStartTime(dto.getStartTime());
+        activity.setTrip(trip);
+
+        return activityRepository.save(activity);
     }
 }

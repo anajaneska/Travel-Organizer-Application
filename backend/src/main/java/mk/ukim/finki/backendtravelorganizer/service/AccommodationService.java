@@ -6,14 +6,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface AccommodationService {
-    //List<Accommodation> getAllAccommodations(String location, LocalDate checkIn, LocalDate checkOut);
-    //Accommodation createListing(String location, double costPerNight, String imageUrl);
-    Accommodation editListing(Long id, String location, double pricePerNight);
+    List<Accommodation> getAllAccommodations();
     Accommodation getAccommodationById(Long id);
-    Accommodation saveAccommodation(Accommodation accommodation);
+    Accommodation saveAccommodation(Long tripId,Accommodation accommodation);
+    Accommodation editAccommodation(Long id, String location, LocalDate checkIn, LocalDate checkOut, Double totalCost);
     void deleteAccommodation(Long id);
-    Accommodation addAccommodationToTrip(Long id, Long tripId, LocalDate checkIn, LocalDate checkOut, Double totalCost);
     List<Accommodation> getAccommodationsByTripId(Long tripId);
-
-    List<Accommodation> getAllAvailableAccommodations();
 }

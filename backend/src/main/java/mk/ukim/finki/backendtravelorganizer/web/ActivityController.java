@@ -17,11 +17,11 @@ public class ActivityController {
     public ActivityController(ActivityService activityService) {
         this.activityService = activityService;
     }
-    @PostMapping
-    public ResponseEntity<Activity> createActivity(@PathVariable Long tripId, @RequestBody Activity activity) {
-        Activity savedActivity = activityService.addActivityToTrip(tripId, activity);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedActivity);
-    }
+//    @PostMapping
+//    public ResponseEntity<Activity> createActivity(@PathVariable Long tripId, @RequestBody Activity activity) {
+//        Activity savedActivity = activityService.addActivityToTrip(tripId, activity);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(savedActivity);
+//    }
 
     // Get all activities for a trip
     @GetMapping
@@ -31,17 +31,17 @@ public class ActivityController {
     }
 
     // Update an existing activity
-    @PutMapping("/{activityId}")
-    public ResponseEntity<Activity> updateActivity(@PathVariable Long tripId, @PathVariable Long activityId,
-                                                   @RequestBody Activity activity) {
-        Activity updatedActivity = activityService.getActivityById(activityId); // Modify if necessary
-        updatedActivity.setName(activity.getName());
-        updatedActivity.setDescription(activity.getDescription());
-        updatedActivity.setLocation(activity.getLocation());
-        updatedActivity.setStartTime(activity.getStartTime());
-        activityService.saveActivity(updatedActivity);
-        return ResponseEntity.ok(updatedActivity);
-    }
+//    @PutMapping("/{activityId}")
+//    public ResponseEntity<Activity> updateActivity(@PathVariable Long tripId, @PathVariable Long activityId,
+//                                                   @RequestBody Activity activity) {
+//        Activity updatedActivity = activityService.getActivityById(activityId); // Modify if necessary
+//        updatedActivity.setName(activity.getName());
+//        updatedActivity.setDescription(activity.getDescription());
+//        updatedActivity.setLocation(activity.getLocation());
+//        updatedActivity.setStartTime(activity.getStartTime());
+//        activityService.saveActivity(updatedActivity);
+//        return ResponseEntity.ok(updatedActivity);
+//    }
 
     // Delete an activity
     @DeleteMapping("/{activityId}")

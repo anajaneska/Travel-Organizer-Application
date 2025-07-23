@@ -39,11 +39,11 @@ public class TransportationController {
         return ResponseEntity.ok(transportation);
     }
 
-    @PostMapping
-    public ResponseEntity<Transportation> createTransportation(@RequestBody TransportationCreateDto dto) {
-        Transportation savedTransportation = transportationService.createListing(dto);
-        return ResponseEntity.ok(savedTransportation);
-    }
+//    @PostMapping
+//    public ResponseEntity<Transportation> createTransportation(@RequestBody TransportationCreateDto dto) {
+//        Transportation savedTransportation = transportationService.createListing(dto);
+//        return ResponseEntity.ok(savedTransportation);
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTransportation(@PathVariable Long id) {
@@ -51,18 +51,18 @@ public class TransportationController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("{id}/trip/{tripId}")
-    public ResponseEntity<Transportation> addTransportationToTrip(@PathVariable Long id,
-                                                                  @PathVariable Long tripId,
-                                                                  @RequestBody TransportationBookingDto dto) {
-        Transportation savedTransportation = transportationService.bookTransport(id, tripId, dto);
-        return ResponseEntity.ok(savedTransportation);
-    }
+//    @PostMapping("{id}/trip/{tripId}")
+//    public ResponseEntity<Transportation> addTransportationToTrip(@PathVariable Long id,
+//                                                                  @PathVariable Long tripId,
+//                                                                  @RequestBody TransportationBookingDto dto) {
+//        Transportation savedTransportation = transportationService.bookTransport(id, tripId, dto);
+//        return ResponseEntity.ok(savedTransportation);
+//    }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Transportation> editTransportation(@PathVariable Long id, @RequestBody TransportationCreateDto dto) {
-        return ResponseEntity.ok(transportationService.saveTransportation(id, dto));
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Transportation> editTransportation(@PathVariable Long id, @RequestBody TransportationCreateDto dto) {
+//        return ResponseEntity.ok(transportationService.saveTransportation(id, dto));
+//    }
 
 //    @GetMapping("/trip/{tripId}")
 //    public ResponseEntity<List<Transportation>> getTransportationByTripId(@PathVariable Long tripId) {

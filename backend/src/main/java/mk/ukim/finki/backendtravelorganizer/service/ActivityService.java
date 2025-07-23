@@ -13,4 +13,5 @@ public interface ActivityService {
     void deleteActivity(Long id);
     List<Activity> getActivitiesByTripId(Long tripId);
     Activity editActivity(Long id, ActivityDto dto);
+    Activity addActivityToTrip(Long tripId, ActivityDto dto);
 }

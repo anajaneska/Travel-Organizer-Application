@@ -1,6 +1,7 @@
 package mk.ukim.finki.backendtravelorganizer.web;
 
 import mk.ukim.finki.backendtravelorganizer.model.Activity;
+import mk.ukim.finki.backendtravelorganizer.model.dto.ActivityDto;
 import mk.ukim.finki.backendtravelorganizer.service.ActivityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,37 +18,34 @@ public class ActivityController {
     public ActivityController(ActivityService activityService) {
         this.activityService = activityService;
     }
-//    @PostMapping
-//    public ResponseEntity<Activity> createActivity(@PathVariable Long tripId, @RequestBody Activity activity) {
-//        Activity savedActivity = activityService.addActivityToTrip(tripId, activity);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(savedActivity);
-//    }
-
-    // Get all activities for a trip
-    @GetMapping
-    public ResponseEntity<List<Activity>> getActivitiesForTrip(@PathVariable Long tripId) {
-        List<Activity> activities = activityService.getActivitiesByTripId(tripId); // Get activities filtered by tripId
-        return ResponseEntity.ok(activities);
+    @PostMapping
+    public ResponseEntity<Activity> createActivity(@PathVariable Long tripId,
+                                                   @RequestBody ActivityDto dto) {
+        Activity savedActivity = activityService.addActivityToTrip(tripId, dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedActivity);
     }
 
-    // Update an existing activity
-//    @PutMapping("/{activityId}")
-//    public ResponseEntity<Activity> updateActivity(@PathVariable Long tripId, @PathVariable Long activityId,
-//                                                   @RequestBody Activity activity) {
-//        Activity updatedActivity = activityService.getActivityById(activityId); // Modify if necessary
-//        updatedActivity.setName(activity.getName());
-//        updatedActivity.setDescription(activity.getDescription());
-//        updatedActivity.setLocation(activity.getLocation());
-//        updatedActivity.setStartTime(activity.getStartTime());
-//        activityService.saveActivity(updatedActivity);
-//        return ResponseEntity.ok(updatedActivity);
-//    }
+    @GetMapping
+    public ResponseEntity<List<Activity>> getActivitiesForTrip(@PathVariable Long tripId) {
+        List<Activity> activities = activityService.getActivitiesByTripId(tripId);
+        return ResponseEntity.ok(activities);
+    }
+    @GetMapping("/{activityId}")
+    public ResponseEntity<Activity> getActivityById(@PathVariable Long activityId) {
+        Activity activity = activityService.getActivityById(activityId);
+        return ResponseEntity.ok(activity);
+    }
+    @PutMapping("/{activityId}")
+    public ResponseEntity<Activity> updateActivity(@PathVariable Long tripId,
+                                                   @PathVariable Long activityId,
+                                                   @RequestBody ActivityDto dto) {
+        Activity updatedActivity = activityService.editActivity(activityId, dto);
+        return ResponseEntity.ok(updatedActivity);
+    }
 
-    // Delete an activity
     @DeleteMapping("/{activityId}")
     public ResponseEntity<Void> deleteActivity(@PathVariable Long activityId) {
         activityService.deleteActivity(activityId);
         return ResponseEntity.noContent().build();
     }
-
 }

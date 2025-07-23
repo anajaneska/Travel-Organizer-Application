@@ -64,4 +64,21 @@ public class ActivityServiceImpl implements ActivityService {
 
         return activityRepository.save(activity);
     }
+    public Activity addActivityToTrip(Long tripId, ActivityDto dto) {
+        // Find the Trip by ID or throw if not found
+        Trip trip = tripRepository.findById(tripId)
+                .orElseThrow(() -> new TripDoesNotExistException());
+
+        // Create new Activity from DTO data and assign to trip
+        Activity activity = new Activity();
+        activity.setName(dto.getName());
+        activity.setDescription(dto.getDescription());
+        activity.setLocation(dto.getLocation());
+        activity.setStartTime(dto.getStartTime());
+        activity.setTrip(trip);
+
+        // Save and return the newly created activity
+        return activityRepository.save(activity);
+    }
+
 }

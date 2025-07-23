@@ -2,6 +2,7 @@ package mk.ukim.finki.backendtravelorganizer.web;
 
 import mk.ukim.finki.backendtravelorganizer.model.dto.TransportationBookingDto;
 import mk.ukim.finki.backendtravelorganizer.model.dto.TransportationCreateDto;
+import mk.ukim.finki.backendtravelorganizer.model.dto.TransportationDto;
 import mk.ukim.finki.backendtravelorganizer.model.dto.TransportationSearchDto;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -9,6 +10,7 @@ import mk.ukim.finki.backendtravelorganizer.model.Transportation;
 import mk.ukim.finki.backendtravelorganizer.service.TransportationService;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,23 +29,11 @@ public class TransportationController {
         this.transportationService = transportationService;
     }
 
-
-//    @GetMapping
-//    public List<Transportation> getAllTransportations(@RequestBody TransportationSearchDto dto) {
-//        return transportationService.getAllTransportations(dto);
-//    }
-
     @GetMapping("/{id}")
     public ResponseEntity<Transportation> getTransportationById(@PathVariable Long id) {
         Transportation transportation = transportationService.getTransportationById(id);
         return ResponseEntity.ok(transportation);
     }
-
-//    @PostMapping
-//    public ResponseEntity<Transportation> createTransportation(@RequestBody TransportationCreateDto dto) {
-//        Transportation savedTransportation = transportationService.createListing(dto);
-//        return ResponseEntity.ok(savedTransportation);
-//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTransportation(@PathVariable Long id) {
@@ -51,13 +41,12 @@ public class TransportationController {
         return ResponseEntity.noContent().build();
     }
 
-//    @PostMapping("{id}/trip/{tripId}")
-//    public ResponseEntity<Transportation> addTransportationToTrip(@PathVariable Long id,
-//                                                                  @PathVariable Long tripId,
-//                                                                  @RequestBody TransportationBookingDto dto) {
-//        Transportation savedTransportation = transportationService.bookTransport(id, tripId, dto);
-//        return ResponseEntity.ok(savedTransportation);
-//    }
+    @PostMapping("/trip/{tripId}")
+    public ResponseEntity<Transportation> addTransportationToTrip(@PathVariable Long tripId,
+                                                                  @RequestBody TransportationDto dto) {
+        Transportation saved = transportationService.addTransportationToTrip(tripId, dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+    }
 
 //    @PutMapping("/{id}")
 //    public ResponseEntity<Transportation> editTransportation(@PathVariable Long id, @RequestBody TransportationCreateDto dto) {
@@ -68,11 +57,6 @@ public class TransportationController {
 //    public ResponseEntity<List<Transportation>> getTransportationByTripId(@PathVariable Long tripId) {
 //        //List<Transportation> transportations = transportationService.getTransportationByTripId(tripId);
 //        return ResponseEntity.ok(transportations);
-//    }
-//    @PostMapping("/{id}/upload-ticket")
-//    public ResponseEntity<Transportation> uploadTicket(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
-//        Transportation updatedTransportation = transportationService.uploadTicket(id, file);
-//        return ResponseEntity.ok(updatedTransportation);
 //    }
 
 }

@@ -10,17 +10,17 @@ public class AccommodationDto {
     private String location;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
-    private double cost;
+    private double totalCost;
     private Long trip;
 
     public AccommodationDto() {
     }
 
-    public AccommodationDto(String location, LocalDate checkInDate, LocalDate checkOutDate, double cost, Long trip) {
+    public AccommodationDto(String location, LocalDate checkInDate, LocalDate checkOutDate, double totalCost, Long trip) {
         this.location = location;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
-        this.cost = cost;
+        this.totalCost = totalCost;
         this.trip = trip;
     }
 }

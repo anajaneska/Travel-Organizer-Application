@@ -2,6 +2,7 @@ package mk.ukim.finki.backendtravelorganizer.service.impl;
 
 import mk.ukim.finki.backendtravelorganizer.model.Accommodation;
 import mk.ukim.finki.backendtravelorganizer.model.Trip;
+import mk.ukim.finki.backendtravelorganizer.model.dto.AccommodationDto;
 import mk.ukim.finki.backendtravelorganizer.model.exceptions.AccommodationDoesNotExistException;
 import mk.ukim.finki.backendtravelorganizer.model.exceptions.TripDoesNotExistException;
 import mk.ukim.finki.backendtravelorganizer.repository.AccommodationRepository;
@@ -39,13 +40,13 @@ public class AccommodationServiceImpl implements AccommodationService {
         accommodation.setTrip(trip);
         return accommodationRepository.save(accommodation);
     }
-    public Accommodation editAccommodation(Long id, String location, LocalDate checkIn, LocalDate checkOut, Double totalCost) {
+    public Accommodation editAccommodation(Long id, AccommodationDto dto) {
         Accommodation accommodation = accommodationRepository.findById(id)
                 .orElseThrow(AccommodationDoesNotExistException::new);
-        accommodation.setLocation(location);
-        accommodation.setCheckInDate(checkIn);
-        accommodation.setCheckOutDate(checkOut);
-        accommodation.setTotalCost(totalCost);
+        accommodation.setLocation(dto.getLocation());
+        accommodation.setCheckInDate(dto.getCheckInDate());
+        accommodation.setCheckOutDate(dto.getCheckOutDate());
+        accommodation.setTotalCost(dto.getTotalCost());
         return accommodationRepository.save(accommodation);
     }
 
@@ -56,6 +57,20 @@ public class AccommodationServiceImpl implements AccommodationService {
     @Override
     public List<Accommodation> getAccommodationsByTripId(Long tripId) {
         return accommodationRepository.findByTripId(tripId);
+    }
+    public Accommodation addAccommodationToTrip(Long tripId, AccommodationDto dto) {
+        Trip trip = tripRepository.findById(tripId)
+                .orElseThrow(() -> new TripDoesNotExistException());
+
+        Accommodation accommodation = new Accommodation(
+                dto.getLocation(),
+                dto.getCheckInDate(),
+                dto.getCheckOutDate(),
+                trip,
+                dto.getTotalCost()
+        );
+
+        return accommodationRepository.save(accommodation);
     }
 
 }

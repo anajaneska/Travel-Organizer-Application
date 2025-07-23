@@ -14,4 +14,5 @@ public interface TransportationService {
     Transportation editTransportation(Long id, TransportationDto dto);
     void deleteTransportation(Long id);
     List<Transportation> getTransportationByTripId(Long tripId);
+    Transportation addTransportationToTrip(Long tripId, TransportationDto dto);
 }

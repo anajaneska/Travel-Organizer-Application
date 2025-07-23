@@ -37,8 +37,6 @@ public class Accommodation {
     @JsonBackReference
     private Trip trip;
 
-
-    // booking constructor
     public Accommodation(String location, LocalDate checkInDate, LocalDate checkOutDate, Trip trip, Double totalCost) {
         this.location = location;
         this.checkInDate = checkInDate;

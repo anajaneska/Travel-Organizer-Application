@@ -3,6 +3,7 @@ package mk.ukim.finki.backendtravelorganizer.web;
 import mk.ukim.finki.backendtravelorganizer.model.Accommodation;
 import mk.ukim.finki.backendtravelorganizer.model.dto.AccommodationBookingDto;
 import mk.ukim.finki.backendtravelorganizer.model.dto.AccommodationCreateDto;
+import mk.ukim.finki.backendtravelorganizer.model.dto.AccommodationDto;
 import mk.ukim.finki.backendtravelorganizer.model.dto.AccommodationSearchDto;
 import mk.ukim.finki.backendtravelorganizer.service.AccommodationService;
 import mk.ukim.finki.backendtravelorganizer.service.TripService;
@@ -24,48 +25,31 @@ public class AccommodationController {
         this.tripService = tripService;
     }
 
-//    @GetMapping
-//    public ResponseEntity<List<Accommodation>> getAllAccommodations(@RequestBody AccommodationSearchDto dto) {
-//        return ResponseEntity.ok(accommodationService.getAllAccommodations(dto.location(), dto.checkInDate(), dto.checkOutDate()));
-//    }
-    @GetMapping("/all")
-    public ResponseEntity<List<Accommodation>> getAllAvailableAccommodations(){
-        List<Accommodation> accommodations = accommodationService.getAllAccommodations();
-        return ResponseEntity.ok(accommodations);
-    }
-
-/*    @PostMapping
-    public ResponseEntity<Accommodation> createListing(@RequestBody AccommodationCreateDto dto) {
-        return ResponseEntity.ok(accommodationService.createListing(dto.location(), dto.costPerNight()));
-    }*/
-
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Accommodation> editListing(@PathVariable Long id, @RequestBody AccommodationCreateDto dto) {
-//        return ResponseEntity.ok(accommodationService.editListing(id, dto.location(), dto.costPerNight()));
-//    }
-
-//    @PostMapping("{id}/trip/{tripId}")
-//    public ResponseEntity<Accommodation> addAccommodationToTrip(@PathVariable Long id, @PathVariable Long tripId, @RequestBody AccommodationBookingDto dto) {
-//        Accommodation savedAccommodation = accommodationService.addAccommodationToTrip(id, tripId, dto.checkInDate(), dto.checkOutDate(), dto.totalCost());
-//        return ResponseEntity.status(HttpStatus.CREATED).body(savedAccommodation);
-//    }
-
     @GetMapping("/trip/{tripId}")
-    public ResponseEntity<List<Accommodation>> getAccommodationsByTrip(@PathVariable Long tripId) {
+    public ResponseEntity<List<Accommodation>> getAllAccommodationsForTrip(@PathVariable Long tripId){
         List<Accommodation> accommodations = accommodationService.getAccommodationsByTripId(tripId);
         return ResponseEntity.ok(accommodations);
     }
-
+    @PostMapping("/trip/{tripId}")
+    public ResponseEntity<Accommodation> addAccommodationToTrip(@PathVariable Long tripId,
+                                                                @RequestBody AccommodationDto dto) {
+        Accommodation saved = accommodationService.addAccommodationToTrip(tripId, dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Accommodation> updateAccommodation(@PathVariable Long id,
+                                                             @RequestBody AccommodationDto dto) {
+        Accommodation updated = accommodationService.editAccommodation(id, dto);
+        return ResponseEntity.ok(updated);
+    }
     @GetMapping("/{id}")
     public ResponseEntity<Accommodation> getAccommodationById(@PathVariable Long id) {
         Accommodation accommodation = accommodationService.getAccommodationById(id);
         return ResponseEntity.ok(accommodation);
     }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAccommodation(@PathVariable Long id) {
         accommodationService.deleteAccommodation(id);
         return ResponseEntity.noContent().build();
     }
-
 }

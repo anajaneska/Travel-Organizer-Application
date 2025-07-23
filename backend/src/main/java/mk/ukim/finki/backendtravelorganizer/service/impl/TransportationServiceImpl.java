@@ -65,4 +65,19 @@ public class TransportationServiceImpl implements TransportationService {
                 .orElseThrow(TransportationDoesNotExistException::new);
         transportationRepository.deleteById(id);
     }
+    public Transportation addTransportationToTrip(Long tripId, TransportationDto dto) {
+        Trip trip = tripRepository.findById(tripId)
+                .orElseThrow(() -> new TripDoesNotExistException());
+
+        Transportation transportation = new Transportation();
+        transportation.setType(dto.getType());
+        transportation.setStartLocation(dto.getStartLocation());
+        transportation.setDestination(dto.getDestination());
+        transportation.setDepartureTime(dto.getDepartureTime());
+        transportation.setArrivalTime(dto.getArrivalTime());
+        transportation.setCost(dto.getCost());
+        transportation.setTrip(trip);
+
+        return transportationRepository.save(transportation);
+    }
 }

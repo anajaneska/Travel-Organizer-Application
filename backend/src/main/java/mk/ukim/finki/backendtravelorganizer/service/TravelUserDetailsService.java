@@ -4,7 +4,6 @@ import mk.ukim.finki.backendtravelorganizer.model.User;
 import mk.ukim.finki.backendtravelorganizer.model.UserPrincipal;
 import mk.ukim.finki.backendtravelorganizer.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -2,8 +2,6 @@ package mk.ukim.finki.backendtravelorganizer.service;
 
 import mk.ukim.finki.backendtravelorganizer.model.Accommodation;
 import mk.ukim.finki.backendtravelorganizer.model.dto.AccommodationDto;
-
-import java.time.LocalDate;
 import java.util.List;
 
 public interface AccommodationService {

@@ -7,7 +7,6 @@ import mk.ukim.finki.backendtravelorganizer.model.exceptions.*;
 import mk.ukim.finki.backendtravelorganizer.repository.*;
 import mk.ukim.finki.backendtravelorganizer.service.TripService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 

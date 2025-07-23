@@ -9,9 +9,6 @@ import mk.ukim.finki.backendtravelorganizer.repository.AccommodationRepository;
 import mk.ukim.finki.backendtravelorganizer.repository.TripRepository;
 import mk.ukim.finki.backendtravelorganizer.service.AccommodationService;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service

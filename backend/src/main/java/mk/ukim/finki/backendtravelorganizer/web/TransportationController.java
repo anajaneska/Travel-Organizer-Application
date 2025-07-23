@@ -1,23 +1,11 @@
 package mk.ukim.finki.backendtravelorganizer.web;
 
-import mk.ukim.finki.backendtravelorganizer.model.dto.TransportationBookingDto;
-import mk.ukim.finki.backendtravelorganizer.model.dto.TransportationCreateDto;
 import mk.ukim.finki.backendtravelorganizer.model.dto.TransportationDto;
-import mk.ukim.finki.backendtravelorganizer.model.dto.TransportationSearchDto;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import mk.ukim.finki.backendtravelorganizer.model.Transportation;
 import mk.ukim.finki.backendtravelorganizer.service.TransportationService;
-
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")

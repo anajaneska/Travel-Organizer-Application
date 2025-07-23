@@ -1,17 +1,14 @@
 package mk.ukim.finki.backendtravelorganizer.service.impl;
 
-import mk.ukim.finki.backendtravelorganizer.model.Accommodation;
 import mk.ukim.finki.backendtravelorganizer.model.Activity;
 import mk.ukim.finki.backendtravelorganizer.model.Trip;
 import mk.ukim.finki.backendtravelorganizer.model.dto.ActivityDto;
-import mk.ukim.finki.backendtravelorganizer.model.dto.ActivitySearchDto;
 import mk.ukim.finki.backendtravelorganizer.model.exceptions.ActivityDoesNotExistException;
 import mk.ukim.finki.backendtravelorganizer.model.exceptions.TripDoesNotExistException;
 import mk.ukim.finki.backendtravelorganizer.repository.ActivityRepository;
 import mk.ukim.finki.backendtravelorganizer.repository.TripRepository;
 import mk.ukim.finki.backendtravelorganizer.service.ActivityService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service

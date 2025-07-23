@@ -2,13 +2,11 @@ package mk.ukim.finki.backendtravelorganizer.web;
 
 import jakarta.servlet.http.HttpServletRequest;
 import mk.ukim.finki.backendtravelorganizer.model.Trip;
-import mk.ukim.finki.backendtravelorganizer.model.User;
 import mk.ukim.finki.backendtravelorganizer.model.dto.TripCreateDto;
 import mk.ukim.finki.backendtravelorganizer.service.TripService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
-
 import java.security.Principal;
 import java.util.List;
 
@@ -21,11 +19,8 @@ public class TripController {
     public TripController(TripService tripService) {
         this.tripService = tripService;
     }
-//    @GetMapping
-//    public List<Trip> getAllTrips() {
-//        return tripService.getAllTrips();
-//    }
-    @PostMapping("/create")
+
+    @PostMapping("")
     public ResponseEntity<Trip> createTrip(@RequestBody TripCreateDto dto, Principal principal) {
         Trip trip = tripService.createTrip(dto, principal.getName());
         return ResponseEntity.ok(trip);
@@ -43,11 +38,6 @@ public class TripController {
         return tripService.getTripById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-    }
-
-    @PostMapping
-    public Trip createTrip(@RequestBody Trip trip) {
-        return tripService.saveTrip(trip);
     }
 
     @PutMapping("/{id}")

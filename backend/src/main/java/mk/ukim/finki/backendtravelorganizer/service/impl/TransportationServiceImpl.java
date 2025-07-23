@@ -1,8 +1,6 @@
 package mk.ukim.finki.backendtravelorganizer.service.impl;
 
 import mk.ukim.finki.backendtravelorganizer.model.Trip;
-import mk.ukim.finki.backendtravelorganizer.model.dto.TransportationBookingDto;
-import mk.ukim.finki.backendtravelorganizer.model.dto.TransportationCreateDto;
 import mk.ukim.finki.backendtravelorganizer.model.dto.TransportationDto;
 import mk.ukim.finki.backendtravelorganizer.model.exceptions.TransportationDoesNotExistException;
 import mk.ukim.finki.backendtravelorganizer.model.exceptions.TripDoesNotExistException;
@@ -11,7 +9,6 @@ import mk.ukim.finki.backendtravelorganizer.repository.TripRepository;
 import mk.ukim.finki.backendtravelorganizer.service.TransportationService;
 import org.springframework.stereotype.Service;
 import mk.ukim.finki.backendtravelorganizer.model.Transportation;
-
 import java.util.List;
 
 @Service

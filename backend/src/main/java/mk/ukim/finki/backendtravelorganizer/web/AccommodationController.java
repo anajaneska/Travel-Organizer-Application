@@ -1,10 +1,7 @@
 package mk.ukim.finki.backendtravelorganizer.web;
 
 import mk.ukim.finki.backendtravelorganizer.model.Accommodation;
-import mk.ukim.finki.backendtravelorganizer.model.dto.AccommodationBookingDto;
-import mk.ukim.finki.backendtravelorganizer.model.dto.AccommodationCreateDto;
 import mk.ukim.finki.backendtravelorganizer.model.dto.AccommodationDto;
-import mk.ukim.finki.backendtravelorganizer.model.dto.AccommodationSearchDto;
 import mk.ukim.finki.backendtravelorganizer.service.AccommodationService;
 import mk.ukim.finki.backendtravelorganizer.service.TripService;
 import org.springframework.http.HttpStatus;
@@ -26,7 +23,7 @@ public class AccommodationController {
     }
 
     @GetMapping("/trip/{tripId}")
-    public ResponseEntity<List<Accommodation>> getAllAccommodationsForTrip(@PathVariable Long tripId){
+    public ResponseEntity<List<Accommodation>> getAccommodationsForTrip(@PathVariable Long tripId){
         List<Accommodation> accommodations = accommodationService.getAccommodationsByTripId(tripId);
         return ResponseEntity.ok(accommodations);
     }

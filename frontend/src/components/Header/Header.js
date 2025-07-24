@@ -17,8 +17,6 @@ const Header = () => {
       <img src={"/logo.png"} alt={"LOGO"} />
       <div>
         <Link to={"/trips"}>My Trips</Link>
-        <Link to={"/profile"}>Profile</Link>
-        <Link to={"/accommodations"}>All Accommodations</Link>
         {!isLoggedIn && (
           <>
             <Link to={"/login"}>Login</Link>

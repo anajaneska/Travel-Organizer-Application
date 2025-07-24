@@ -1,17 +1,15 @@
 import './App.css';
 import React, {Component} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css'
-import Accommodations from "../Accommodations/Accommodations";
 import TravelAppService from "../../repository/repo";
 import {BrowserRouter as Router, Redirect, Route, Routes} from "react-router-dom";
 import Header from "../Header/Header";
-import Trips from "../Trips/Trips";
 import Login from '../Login.js'
 import Register from '../Register.js';
 import CreateTrip from '../Trips/CreateTrip.js';
 import { Navigate } from 'react-router-dom';
 import TripsList from '../Trips/TripList.js';
-import AccommodationDetails from '../Accommodations/AccommodationDetails.js';
+import HomePage from '../../pages/HomePage.js';
 
 class App extends Component {
   constructor(props) {
@@ -22,15 +20,6 @@ class App extends Component {
       isLoggedIn: !!localStorage.getItem("jwt"),
     };
   }
-
-  loadAccommodations = () => {
-    TravelAppService.fetchAccommodations()
-      .then((data) => {
-        this.setState({
-          accommodations: data.data,
-        });
-      });
-  };
 
   loadTrips = () => {
     TravelAppService.fetchTrips()
@@ -46,7 +35,6 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.loadAccommodations();
     if (this.state.isLoggedIn) {
       this.loadTrips();
     }
@@ -57,12 +45,9 @@ class App extends Component {
       <Router>
         <Header />
         <Routes>
+          <Route path="/" element={<HomePage />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login onLogin={this.onLogin} />} />
-          <Route
-            path="/accommodations"
-            element={<Accommodations accommodations={this.state.accommodations} />}
-          />
           <Route
             path="/trips"
             element={
@@ -83,7 +68,6 @@ class App extends Component {
               )
             }
           />
-          <Route path="/accommodations/:id" element={<AccommodationDetails />} />
         </Routes>
       </Router>
     );

@@ -44,6 +44,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/trips/**").authenticated()
                         .requestMatchers("/api/accommodations/{id}").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/accommodations/*/trip/*").permitAll()
+                        .requestMatchers("/api/amadeus/hotels").permitAll()
                         .anyRequest().authenticated())
                 //.httpBasic(Customizer.withDefaults()) //za postman
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

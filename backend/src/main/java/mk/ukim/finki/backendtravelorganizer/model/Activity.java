@@ -23,6 +23,7 @@ public class Activity {
     private String description;
     private String location;
     private LocalDateTime startTime;
+    private Double cost;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trip_id")

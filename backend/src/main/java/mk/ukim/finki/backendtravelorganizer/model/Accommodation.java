@@ -27,7 +27,7 @@ public class Accommodation {
     private LocalDate checkOutDate;
 
     @Column(name = "total_cost")
-    private double totalCost;  // per booking
+    private Double totalCost;  // per booking
 
     @ManyToOne
     @JoinColumn(name = "trip_id")

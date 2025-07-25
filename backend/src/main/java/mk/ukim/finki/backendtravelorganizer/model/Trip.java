@@ -46,31 +46,37 @@ public class Trip {
     private Double budget;
     private Double currentExpenses = 0.0;
 
-    //Expense da ne bide poseben entity
-//    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
-//    @JsonManagedReference
-//    private List<Expense> expenses = new ArrayList<>();
-
     public void addAccommodation(Accommodation accommodation) {
         accommodation.setTrip(this);
         this.accommodations.add(accommodation);
+        this.currentExpenses += (accommodation.getTotalCost() != null) ? accommodation.getTotalCost() : 0.0;
+
     }
     public void addActivity(Activity activity){
         activity.setTrip(this);
         this.activities.add(activity);
+        this.currentExpenses += (activity.getCost() != null) ? activity.getCost() : 0.0;
     }
     public void addTransportation(Transportation transportation){
         transportation.setTrip(this);
         this.transportations.add(transportation);
+        this.currentExpenses += (transportation.getCost() != null) ? transportation.getCost() : 0.0;
     }
-//    public void addExpense(Expense expense) {
-//        expense.setTrip(this);
-//        this.expenses.add(expense);
-//        this.currentExpenses += expense.getAmount();
-//    }
 
     public boolean isBudgetExceeded() {
         return currentExpenses > budget;
+    }
+    public void recalculateTotal() {
+        this.currentExpenses = 0.0;
+
+        for (Accommodation a : accommodations)
+            this.currentExpenses += a.getTotalCost() != null ? a.getTotalCost() : 0.0;
+
+        for (Activity act : activities)
+            this.currentExpenses += act.getCost() != null ? act.getCost() : 0.0;
+
+        for (Transportation t : transportations)
+            this.currentExpenses += t.getCost() != null ? t.getCost() : 0.0;
     }
 
     public Trip(String name, LocalDate startDate, LocalDate endDate, Double budget) {

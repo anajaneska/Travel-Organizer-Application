@@ -3,10 +3,7 @@ package mk.ukim.finki.backendtravelorganizer.web;
 import mk.ukim.finki.backendtravelorganizer.service.AmadeusService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/amadeus")
@@ -26,6 +23,10 @@ public class AmadeusController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching hotels");
         }
+    }
+    @GetMapping("/activities")
+    public ResponseEntity<String> getActivities(@RequestParam double lat, @RequestParam double lon) {
+        return ResponseEntity.ok(amadeusService.getActivities(lat, lon));
     }
 }
 

@@ -18,6 +18,7 @@ const HotelList = () => {
   return (
     <div className="container mt-4">
       <div className="row">
+        <h2>Top Accommodations for You</h2>
         {hotels.length === 0 ? (
           <p>Loading hotels...</p>
         ) : (

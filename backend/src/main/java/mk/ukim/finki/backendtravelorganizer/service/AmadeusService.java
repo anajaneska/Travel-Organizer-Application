@@ -92,4 +92,43 @@ public class AmadeusService {
             throw new RuntimeException("Failed to parse hotel data");
         }
     }
+    public String getActivities(double latitude, double longitude) {
+        String token = getAccessToken();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        String url = String.format(
+                "https://test.api.amadeus.com/v1/shopping/activities?latitude=%.4f&longitude=%.4f&radius=20",
+                latitude, longitude
+        );
+
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+            String responseBody = response.getBody();
+
+            JsonNode root = objectMapper.readTree(responseBody);
+            JsonNode data = root.get("data");
+
+            ArrayNode limited = objectMapper.createArrayNode();
+            for (int i = 0; i < Math.min(5, data.size()); i++) {
+                limited.add(data.get(i));
+            }
+
+            ObjectNode result = objectMapper.createObjectNode();
+            result.set("data", limited);
+
+            return objectMapper.writeValueAsString(result);
+        } catch (HttpStatusCodeException e) {
+            System.err.println("Status code: " + e.getStatusCode());
+            System.err.println("Response: " + e.getResponseBodyAsString());
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to parse activity data");
+        }
+    }
+
+
 }

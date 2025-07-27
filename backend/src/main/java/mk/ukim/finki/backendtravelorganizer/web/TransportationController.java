@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/transportations")
@@ -36,15 +38,15 @@ public class TransportationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Transportation> editTransportation(@PathVariable Long id, @RequestBody TransportationCreateDto dto) {
-//        return ResponseEntity.ok(transportationService.saveTransportation(id, dto));
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Transportation> editTransportation(@PathVariable Long id, @RequestBody TransportationDto dto) {
+        return ResponseEntity.ok(transportationService.saveTransportation(id, dto));
+    }
 
-//    @GetMapping("/trip/{tripId}")
-//    public ResponseEntity<List<Transportation>> getTransportationByTripId(@PathVariable Long tripId) {
-//        //List<Transportation> transportations = transportationService.getTransportationByTripId(tripId);
-//        return ResponseEntity.ok(transportations);
-//    }
+    @GetMapping("/trip/{tripId}")
+    public ResponseEntity<List<Transportation>> getTransportationByTripId(@PathVariable Long tripId) {
+        List<Transportation> transportations = transportationService.getTransportationByTripId(tripId);
+        return ResponseEntity.ok(transportations);
+    }
 
 }

@@ -1,39 +1,45 @@
 import React, { useEffect, useState } from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import TravelAppService from "../../repository/repo";
-import {FaTrash} from "react-icons/fa";
 import instance from "../../custom-axios/axios";
+import AddToTripModal from "../AddToTripModal";
 
 const TripDetails = () => {
     const { id } = useParams();
+    const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
     const [trip, setTrip] = useState(null);
     const [editMode, setEditMode] = useState(false);
     const [formData, setFormData] = useState({
         name: "",
-        destination: "",
         startDate: "",
         endDate: "",
         budget: ""
     });
 
+    const fetchTrip = async () => {
+        try {
+            const response = await TravelAppService.fetchTripById(id);
+            setTrip(response.data);
+            setFormData({
+                name: response.data.name,
+                startDate: response.data.startDate,
+                endDate: response.data.endDate,
+                budget: response.data.budget
+            });
+        } catch (err) {
+            alert("Failed to load trip");
+            navigate("/");
+        }
+    };
+
     useEffect(() => {
-        const fetchTrip = async () => {
-            try {
-                const response = await instance.get(`/trips/${id}`);
-                setTrip(response.data);
-                setFormData(response.data);
-            } catch (err) {
-                alert("Failed to load trip");
-                navigate("/"); // redirect on failure
-            }
-        };
         fetchTrip();
     }, [id, navigate]);
 
     const handleDelete = async () => {
         try {
-            await instance.delete(`/trips/${id}`);
+            await TravelAppService.deleteTrip(id);
             navigate("/trips");
         } catch {
             alert("Delete failed");
@@ -47,11 +53,53 @@ const TripDetails = () => {
     const handleUpdate = async () => {
         try {
             await instance.put(`/trips/${id}`, formData);
-            setTrip(formData);
+            setTrip({ ...trip, ...formData });
             setEditMode(false);
         } catch {
             alert("Update failed");
         }
+    };
+
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        const isDateOnly = dateString.length <= 10;
+        return isDateOnly
+            ? date.toLocaleDateString()
+            : date.toLocaleString();
+    };
+
+    const renderCard = (item, type) => {
+        const deleteEntity = async () => {
+            const endpointMap = {
+                "Transportation": "transportations",
+                "Accommodation": "accommodations",
+                "Activity": "activities",
+            };
+
+            try {
+                await instance.delete(`/${endpointMap[type]}/${item.id}`);
+                fetchTrip(); // refresh data
+            } catch (err) {
+                alert(`Failed to delete ${type.toLowerCase()}.`);
+            }
+        };
+
+        return (
+            <div key={item.id} className="card">
+                <p><strong>{type}:</strong> {item.name || item.location || item.description}</p>
+                <p>
+                    <strong>Start:</strong> {formatDate(item.startDate || item.checkInDate || item.date || item.departureTime || item.startTime)}
+                </p>
+                <p>
+                    <strong>End:</strong> {formatDate(item.endDate || item.checkOutDate || item.arrivalTime || item.endTime)}
+                </p>
+                <p><strong>Cost:</strong> ${item.cost || item.totalCost || item.price || 0}</p>
+                <button>Edit
+                </button>
+                <button onClick={deleteEntity}>Delete</button>
+            </div>
+        );
     };
 
     if (!trip) return <p>Loading...</p>;
@@ -59,11 +107,19 @@ const TripDetails = () => {
     return (
         <div className="trip-details">
             <h2>Trip Details</h2>
+            <button onClick={() => setShowModal(true)}>Add to Trip</button>
+
+            {showModal && (
+                <AddToTripModal
+                    tripId={id}
+                    onClose={() => setShowModal(false)}
+                    onSuccess={fetchTrip}
+                />
+            )}
 
             {editMode ? (
                 <div className="edit-form">
                     <label>Name: <input name="name" value={formData.name} onChange={handleChange} /></label>
-                    <label>Destination: <input name="destination" value={formData.destination} onChange={handleChange} /></label>
                     <label>Start Date: <input name="startDate" type="date" value={formData.startDate} onChange={handleChange} /></label>
                     <label>End Date: <input name="endDate" type="date" value={formData.endDate} onChange={handleChange} /></label>
                     <label>Budget: <input name="budget" type="number" value={formData.budget} onChange={handleChange} /></label>
@@ -73,13 +129,29 @@ const TripDetails = () => {
             ) : (
                 <div className="view-mode">
                     <p><strong>Name:</strong> {trip.name}</p>
-                    <p><strong>Destination:</strong> {trip.destination}</p>
                     <p><strong>Dates:</strong> {trip.startDate} – {trip.endDate}</p>
                     <p><strong>Budget:</strong> ${trip.budget}</p>
                     <button onClick={() => setEditMode(true)}>Edit</button>
-                    <button onClick={handleDelete}>🗑️ Delete</button>
+                    <button onClick={handleDelete}>Delete</button>
                 </div>
             )}
+
+            <hr />
+
+            <h3>Transportations</h3>
+            <div className="card-group">
+                {trip.transportations?.map(t => renderCard(t, "Transportation"))}
+            </div>
+
+            <h3>Accommodations</h3>
+            <div className="card-group">
+                {trip.accommodations?.map(a => renderCard(a, "Accommodation"))}
+            </div>
+
+            <h3>Activities</h3>
+            <div className="card-group">
+                {trip.activities?.map(act => renderCard(act, "Activity"))}
+            </div>
         </div>
     );
 };

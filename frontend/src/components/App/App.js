@@ -18,6 +18,8 @@ class App extends Component {
     this.state = {
       accommodations: [],
       trips: [],
+      activities: [],
+      transportations: [],
       isLoggedIn: !!localStorage.getItem("jwt"),
     };
   }
@@ -73,7 +75,7 @@ class App extends Component {
               path="/trips/:id"
               element={
                 this.state.isLoggedIn ? (
-                  <TripDetails />
+                  <TripDetails activities={this.state.activities} transportations={this.state.transportations} accommodations={this.state.accommodations} />
                     ) : (
                         <Navigate to="/login" />
                     )

@@ -47,7 +47,7 @@ public class TripServiceImpl implements TripService {
         Trip trip = this.tripRepository.findById(id)
                 .orElseThrow(TripDoesNotExistException::new);
 
-        trip.setName(dto.getDestination());
+        trip.setName(dto.getName());
         trip.setStartDate(dto.getStartDate());
         trip.setEndDate(dto.getEndDate());
         trip.setBudget(dto.getBudget());

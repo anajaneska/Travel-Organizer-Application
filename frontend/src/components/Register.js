@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import instance from '../custom-axios/axios'
+import {useNavigate} from "react-router-dom";
 
 export default function Register() {
   const [form, setForm] = useState({ username: '', password: '' });
-
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await instance.post('/auth/register', form);
       alert("Registered successfully");
+      navigate(`/login`);
     } catch (err) {
       alert("Registration failed");
     }

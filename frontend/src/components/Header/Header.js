@@ -14,9 +14,11 @@ const Header = () => {
 
   return (
     <nav>
-      <img src={"/logo.png"} alt={"LOGO"} />
+        <Link to={"/"}><img src={"/logo.png"} alt={"LOGO"} /></Link>
       <div>
+        {isLoggedIn && (
         <Link to={"/trips"}>My Trips</Link>
+        )}
         {!isLoggedIn && (
           <>
             <Link to={"/login"}>Login</Link>

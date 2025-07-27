@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 public class TripDto {
-    private String destination;
+    private String name;
     private LocalDate startDate;
     private LocalDate endDate;
     private List<AccommodationDto> accommodations;
@@ -19,8 +19,8 @@ public class TripDto {
     public TripDto() {
     }
 
-    public TripDto(String destination, LocalDate startDate, LocalDate endDate, List<AccommodationDto> accommodations, List<ActivityDto> activities, List<TransportationDto> transportations, Double budget, Double currentExpenses) {
-        this.destination = destination;
+    public TripDto(String name, LocalDate startDate, LocalDate endDate, List<AccommodationDto> accommodations, List<ActivityDto> activities, List<TransportationDto> transportations, Double budget, Double currentExpenses) {
+        this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
         this.accommodations = accommodations;

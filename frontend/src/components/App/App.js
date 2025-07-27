@@ -10,6 +10,7 @@ import CreateTrip from '../Trips/CreateTrip.js';
 import { Navigate } from 'react-router-dom';
 import TripsList from '../Trips/TripList.js';
 import HomePage from '../../pages/HomePage.js';
+import TripDetails from "../Trips/TripDetails";
 
 class App extends Component {
   constructor(props) {
@@ -67,6 +68,16 @@ class App extends Component {
                 <Navigate to="/login" />
               )
             }
+          />
+          <Route
+              path="/trips/:id"
+              element={
+                this.state.isLoggedIn ? (
+                  <TripDetails />
+                    ) : (
+                        <Navigate to="/login" />
+                    )
+              }
           />
         </Routes>
       </Router>

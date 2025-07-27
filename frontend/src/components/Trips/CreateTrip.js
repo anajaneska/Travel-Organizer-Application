@@ -1,27 +1,27 @@
 import React, { useState } from "react";
 import instance from "../../custom-axios/axios";
+import {useNavigate} from "react-router-dom";
 
 export default function CreateTrip({ onTripCreated }) {
   const [trip, setTrip] = useState({
     name: "",
-    destination: "",
     startDate: "",
     endDate: "",
     budget: "",
   });
-
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await instance.post("/trips/create", {
+      await instance.post("/trips", {
         name: trip.name,
-        destination: trip.destination,
         startDate: trip.startDate,
         endDate: trip.endDate,
         budget: parseFloat(trip.budget),
       });
       alert("Trip created!");
       onTripCreated();
+      navigate(`/trips`);
     } catch (error) {
       alert("Failed to create trip");
     }
@@ -34,11 +34,6 @@ export default function CreateTrip({ onTripCreated }) {
         placeholder="Name"
         value={trip.name}
         onChange={(e) => setTrip({ ...trip, name: e.target.value })}
-      />
-      <input
-        placeholder="Destination"
-        value={trip.destination}
-        onChange={(e) => setTrip({ ...trip, destination: e.target.value })}
       />
       <input
         type="date"

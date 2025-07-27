@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import instance from '../custom-axios/axios'
+import {useNavigate} from "react-router-dom";
 
 export default function Login() {
   const [form, setForm] = useState({ username: '', password: '' });
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,11 +15,8 @@ export default function Login() {
 
       localStorage.setItem('jwt', token);
       alert("Logged in successfully");
+      navigate(`/`);
 
-      // Optional: redirect after login
-      // window.location.href = "/dashboard";
-
-      // Clear form
       setForm({ username: '', password: '' });
     } catch (err) {
       alert("Login failed");

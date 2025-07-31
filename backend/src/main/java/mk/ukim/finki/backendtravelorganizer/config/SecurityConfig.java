@@ -40,19 +40,22 @@ public class SecurityConfig {
                .cors(Customizer.withDefaults())
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/auth/login","/api/auth/register","/api/accommodations/all").permitAll()
+                        //Allow public pages
+                        .requestMatchers("/","/api/auth/login","/api/auth/register").permitAll()
+
+                        //Public Amadeus calls
+                        .requestMatchers("/api/amadeus/**").permitAll()
+
+                        //Only logged-in users
                         .requestMatchers("/api/trips/**").authenticated()
-                        .requestMatchers("/api/accommodations/{id}").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/api/accommodations/*/trip/*").permitAll()
-                        .requestMatchers("/api/amadeus/hotels").permitAll()
-                        .requestMatchers("/api/amadeus/activities/**").permitAll()
-                        .requestMatchers(HttpMethod.PUT,"/api/activities/**").permitAll()
+                        .requestMatchers("/api/accommodations/**").authenticated()
+                        .requestMatchers("/api/activities/**").authenticated()
+                        .requestMatchers("/api/transportations/**").authenticated()
+
                         .anyRequest().authenticated())
-                //.httpBasic(Customizer.withDefaults()) //za postman
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                .build();
-        //http.formLogin(Customizer.withDefaults());
     }
 
     @Bean

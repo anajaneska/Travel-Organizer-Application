@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TravelAppService from "../repository/repo";
@@ -13,9 +13,16 @@ const TripCreator = ({ onCreate }) => {
     });
 
   const handleCreateTrip = async (tripName) => {
+    const token = localStorage.getItem("jwt"); // Or whatever key you used
+
+    if (!token) {
+        alert("You must be logged in to create a trip.");
+        navigate("/login");
+        return;
+    }
       try {
           const response = await TravelAppService.createTrip(trip);
-          const createdTripId = response.data.id; // adjust depending on API response
+          const createdTripId = response.data.id;
           navigate(`/trips/${createdTripId}`);
       } catch (error) {
           alert("Failed to create trip");

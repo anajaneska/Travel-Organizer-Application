@@ -10,6 +10,7 @@ const TripDetails = () => {
     const navigate = useNavigate();
     const [trip, setTrip] = useState(null);
     const [editMode, setEditMode] = useState(false);
+    const [editingItem, setEditingItem] = useState(null); // { type, item }
     const [formData, setFormData] = useState({
         name: "",
         startDate: "",
@@ -69,38 +70,113 @@ const TripDetails = () => {
             : date.toLocaleString();
     };
 
-    const renderCard = (item, type) => {
-        const deleteEntity = async () => {
-            const endpointMap = {
-                "Transportation": "transportations",
-                "Accommodation": "accommodations",
-                "Activity": "activities",
-            };
+const renderCard = (item, type) => {
+    const isEditing = editingItem?.id === item.id && editingItem?.type === type;
 
-            try {
-                await instance.delete(`/${endpointMap[type]}/${item.id}`);
-                fetchTrip(); // refresh data
-            } catch (err) {
-                alert(`Failed to delete ${type.toLowerCase()}.`);
+    const handleEditChange = (e) => {
+        const { name, value } = e.target;
+        setEditingItem(prev => ({
+            ...prev,
+            data: {
+                ...prev.data,
+                [name]: value
             }
+        }));
+    };
+
+    const saveEdit = async () => {
+        const endpointMap = {
+            "Transportation": "transportations",
+            "Accommodation": "accommodations",
+            "Activity": "activities",
         };
 
+        try {
+        const payload = {
+            ...editingItem.data,
+            trip: id 
+        };
+        await instance.put(`/${endpointMap[editingItem.type]}/${editingItem.id}`, payload);
+        setEditingItem(null);
+        fetchTrip();
+    } catch {
+        alert("Update failed");
+    }
+    };
+
+    const cancelEdit = () => setEditingItem(null);
+
+    if (isEditing) {
+        const data = editingItem.data;
         return (
             <div key={item.id} className="card">
-                <p><strong>{type}:</strong> {item.name || item.location || item.description}</p>
-                <p>
-                    <strong>Start:</strong> {formatDate(item.startDate || item.checkInDate || item.date || item.departureTime || item.startTime)}
-                </p>
-                <p>
-                    <strong>End:</strong> {formatDate(item.endDate || item.checkOutDate || item.arrivalTime || item.endTime)}
-                </p>
-                <p><strong>Cost:</strong> ${item.cost || item.totalCost || item.price || 0}</p>
-                <button>Edit
-                </button>
-                <button onClick={deleteEntity}>Delete</button>
+                {type === "Accommodation" && (
+                    <>
+                        <input name="location" value={data.location} onChange={handleEditChange} />
+                        <input type="date" name="checkInDate" value={data.checkInDate} onChange={handleEditChange} />
+                        <input type="date" name="checkOutDate" value={data.checkOutDate} onChange={handleEditChange} />
+                        <input type="number" name="totalCost" value={data.totalCost} onChange={handleEditChange} />
+                    </>
+                )}
+                {type === "Activity" && (
+                    <>
+                        <input name="name" value={data.name} onChange={handleEditChange} />
+                        <input name="description" value={data.description} onChange={handleEditChange} />
+                        <input name="location" value={data.location} onChange={handleEditChange} />
+                        <input type="datetime-local" name="startTime" value={data.startTime} onChange={handleEditChange} />
+                        <input type="datetime-local" name="endTime" value={data.endTime} onChange={handleEditChange} />
+                        <input type="number" name="cost" value={data.cost} onChange={handleEditChange} />
+                    </>
+                )}
+                {type === "Transportation" && (
+                    <>
+                        <select name="type" value={data.type} onChange={handleEditChange}>
+                            <option value="CAR">Car</option>
+                            <option value="PLANE">Plane</option>
+                            <option value="BUS">Bus</option>
+                            <option value="TRAIN">Train</option>
+                            <option value="BOAT">Boat</option>
+                            <option value="TRAM">Tram</option>
+                        </select>
+                        <input name="startLocation" value={data.startLocation} onChange={handleEditChange} />
+                        <input name="destination" value={data.destination} onChange={handleEditChange} />
+                        <input type="datetime-local" name="departureTime" value={data.departureTime} onChange={handleEditChange} />
+                        <input type="datetime-local" name="arrivalTime" value={data.arrivalTime} onChange={handleEditChange} />
+                        <input type="number" name="cost" value={data.cost} onChange={handleEditChange} />
+                    </>
+                )}
+                <button onClick={saveEdit}>Save</button>
+                <button onClick={cancelEdit}>Cancel</button>
             </div>
         );
+    }
+
+    const deleteEntity = async () => {
+        const endpointMap = {
+            "Transportation": "transportations",
+            "Accommodation": "accommodations",
+            "Activity": "activities",
+        };
+
+        try {
+            await instance.delete(`/${endpointMap[type]}/${item.id}`);
+            fetchTrip();
+        } catch (err) {
+            alert(`Failed to delete ${type.toLowerCase()}.`);
+        }
     };
+
+    return (
+        <div key={item.id} className="card">
+            <p><strong>{type}:</strong> {item.name || item.location || item.description}</p>
+            <p><strong>Start:</strong> {formatDate(item.startDate || item.checkInDate || item.date || item.departureTime || item.startTime)}</p>
+            <p><strong>End:</strong> {formatDate(item.endDate || item.checkOutDate || item.arrivalTime || item.endTime)}</p>
+            <p><strong>Cost:</strong> ${item.cost || item.totalCost || item.price || 0}</p>
+            <button onClick={() => setEditingItem({ type, id: item.id, data: { ...item } })}>Edit</button>
+            <button onClick={deleteEntity}>Delete</button>
+        </div>
+    );
+};
 
     if (!trip) return <p>Loading...</p>;
 

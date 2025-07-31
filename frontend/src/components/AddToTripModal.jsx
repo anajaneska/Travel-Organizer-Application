@@ -49,6 +49,9 @@ export default function AddToTripModal({ tripId, onClose, onSuccess }) {
                         <input name="description" onChange={handleChange} placeholder="Description" />
                         <input name="location" onChange={handleChange} placeholder="Location" />
                         <input type="datetime-local" name="startTime" onChange={handleChange} />
+                        <input type="datetime-local" name="endTime" onChange={handleChange} />
+                        <input type="number" name="cost" step="0.01" min={0} onChange={handleChange} placeholder="Cost"/>
+
                     </>
                 );
             case "transportation":

@@ -23,6 +23,7 @@ public class Activity {
     private String description;
     private String location;
     private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private Double cost;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,10 +37,12 @@ public class Activity {
         this.startTime = startTime;
     }
 
-    public Activity(String name, String description, String location, LocalDateTime startTime) {
+    public Activity(String name, String description, String location, LocalDateTime startTime, LocalDateTime endTime, Double cost) {
         this.name = name;
         this.description = description;
         this.location = location;
         this.startTime = startTime;
+        this.endTime = endTime;
+        this.cost = cost;
     }
 }

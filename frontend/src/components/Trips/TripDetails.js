@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import TravelAppService from "../../repository/repo";
 import instance from "../../custom-axios/axios";
 import AddToTripModal from "../AddToTripModal";
+import { MdOutlineEdit } from "react-icons/md";
+import { BiTrash } from "react-icons/bi";
 
 const TripDetails = () => {
     const { id } = useParams();
@@ -167,13 +169,26 @@ const renderCard = (item, type) => {
     };
 
     return (
-        <div key={item.id} className="card">
-            <p><strong>{type}:</strong> {item.name || item.location || item.description}</p>
-            <p><strong>Start:</strong> {formatDate(item.startDate || item.checkInDate || item.date || item.departureTime || item.startTime)}</p>
-            <p><strong>End:</strong> {formatDate(item.endDate || item.checkOutDate || item.arrivalTime || item.endTime)}</p>
-            <p><strong>Cost:</strong> ${item.cost || item.totalCost || item.price || 0}</p>
-            <button onClick={() => setEditingItem({ type, id: item.id, data: { ...item } })}>Edit</button>
-            <button onClick={deleteEntity}>Delete</button>
+        <div key={item.id} className="card d-flex justify-content-between align-top mx-1 my-2 p-3">
+            <div>
+                <p className={'d-flex'} style={{color: '#555'}}>{type}: <div className='fw-medium mx-1'
+                                                                             style={{color: 'rgb(51, 51, 51)'}}> {item.name || item.location || item.description || item.type} </div>
+                </p>
+                <p className={'d-flex'} style={{color: '#555'}}>Start:<div className='fw-medium mx-1'
+                             style={{color: 'rgb(51, 51, 51)'}}> {formatDate(item.startDate || item.checkInDate || item.date || item.departureTime || item.startTime)}
+                </div></p>
+                <p className={'d-flex'} style={{color: '#555'}}>
+                    End:<div className='fw-medium mx-1'
+                                     style={{color: 'rgb(51, 51, 51)'}}>{formatDate(item.endDate || item.checkOutDate || item.arrivalTime || item.endTime)}
+                    </div></p>
+                <p className={'d-flex'} style={{color: '#555'}}>
+                    Cost:<div className='fw-medium mx-1'
+                              style={{color: 'rgb(51, 51, 51)'}}> ${item.cost || item.totalCost || item.price || 0}</div></p>
+            </div>
+            <div className='my-3'>
+                <MdOutlineEdit size={28} onClick={() => setEditingItem({type, id: item.id, data: {...item}})} className='mx-3'/>
+                <BiTrash size={28} onClick={deleteEntity} className='mx-3'/>
+            </div>
         </div>
     );
 };
@@ -181,9 +196,11 @@ const renderCard = (item, type) => {
     if (!trip) return <p>Loading...</p>;
 
     return (
-        <div className="trip-details">
-            <h2>Trip Details</h2>
-            <button onClick={() => setShowModal(true)}>Add to Trip</button>
+        <div className="trip-details container">
+            <div className={'d-flex justify-content-between align-top'}>
+                <h2 className={'m-0 fw-medium'}>Trip Details</h2>
+                <button onClick={() => setShowModal(true)}>Add to Trip</button>
+            </div>
 
             {showModal && (
                 <AddToTripModal
@@ -194,25 +211,43 @@ const renderCard = (item, type) => {
             )}
 
             {editMode ? (
-                <div className="edit-form">
-                    <label>Name: <input name="name" value={formData.name} onChange={handleChange} /></label>
-                    <label>Start Date: <input name="startDate" type="date" value={formData.startDate} onChange={handleChange} /></label>
-                    <label>End Date: <input name="endDate" type="date" value={formData.endDate} onChange={handleChange} /></label>
-                    <label>Budget: <input name="budget" type="number" value={formData.budget} onChange={handleChange} /></label>
-                    <button onClick={handleUpdate}>Save</button>
+                <div className="edit-form d-grid" style={{width: 'fit-content'}}>
+                    <label className={'d-flex align-items-center'} style={{color: '#555'}}>Name:
+                        <input name="name" value={formData.name} onChange={handleChange} className={'px-2 py-1 mx-1'} style={{color: 'rgb(51, 51, 51)'}}/></label>
+                    <label className={'d-flex align-items-center'} style={{color: '#555'}}>Start Date:
+                        <input name="startDate" type="date" value={formData.startDate} className={'px-2 py-1 mx-1'} style={{color: 'rgb(51, 51, 51)'}}
+                                              onChange={handleChange}/></label>
+                    <label className={'d-flex align-items-center'} style={{color: '#555'}}>End Date: <input name="endDate" type="date" value={formData.endDate}
+                                            onChange={handleChange} className={'px-2 py-1 mx-1'} style={{color: 'rgb(51, 51, 51)'}}/></label>
+                    <label className={'d-flex align-items-center'} style={{color: '#555'}}>Budget:
+                        <input name="budget" type="number" value={formData.budget} onChange={handleChange} className={'px-2 py-1 mx-1'} style={{color: 'rgb(51, 51, 51)'}}/></label>
+                   <button onClick={handleUpdate}>Save</button>
                     <button onClick={() => setEditMode(false)}>Cancel</button>
                 </div>
             ) : (
-                <div className="view-mode">
-                    <p><strong>Name:</strong> {trip.name}</p>
-                    <p><strong>Dates:</strong> {trip.startDate} – {trip.endDate}</p>
-                    <p><strong>Budget:</strong> ${trip.budget}</p>
-                    <button onClick={() => setEditMode(true)}>Edit</button>
-                    <button onClick={handleDelete}>Delete</button>
+                <div className="view-mode d-flex justify-content-between align-top mx-1">
+                    <div>
+                        <p className={'d-flex'} style={{color: '#555'}}>Name:
+                            <div className='fw-medium mx-1' style={{color: 'rgb(51, 51, 51)'}}>{trip.name}</div>
+                        </p>
+                        <p className={'d-flex'} style={{color: '#555'}}>Start Date:
+                            <div className='fw-medium mx-1' style={{color: 'rgb(51, 51, 51)'}}>{trip.startDate}</div>
+                        </p>
+                        <p className={'d-flex'} style={{color: '#555'}}>End Date:
+                            <div className='fw-medium mx-1' style={{color: 'rgb(51, 51, 51)'}}>{trip.endDate}</div>
+                        </p>
+                        <p className={'d-flex'} style={{color: '#555'}}>Budget:
+                            <div className='fw-medium mx-1' style={{color: 'rgb(51, 51, 51)'}}>${trip.budget}</div>
+                        </p>
+                    </div>
+                    <div className='my-3 mx-3'>
+                        <MdOutlineEdit size={28} onClick={() => setEditMode(true)} className='mx-3'/>
+                        <BiTrash size={28} onClick={handleDelete} className='mx-3'/>
+                    </div>
                 </div>
             )}
 
-            <hr />
+            <hr/>
 
             <h3>Transportations</h3>
             <div className="card-group">

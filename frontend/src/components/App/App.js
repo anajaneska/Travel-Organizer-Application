@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import TravelAppService from "../../repository/repo";
 import {BrowserRouter as Router, Redirect, Route, Routes} from "react-router-dom";
 import Header from "../Header/Header";
-import Login from '../Login.js'
+import Login from '../Login/Login.js'
 import Register from '../Register.js';
 import CreateTrip from '../Trips/CreateTrip.js';
 import { Navigate } from 'react-router-dom';

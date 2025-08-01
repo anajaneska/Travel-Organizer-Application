@@ -1,0 +1,25 @@
+* {
+    font-family: Inter, Arial, sans-serif;
+}
+section {
+    background-color: #F3F3F3;
+}
+#container {
+    padding: 8rem 9rem;
+}
+button {
+    padding: 12px 35px;
+    background: #F27705;
+    border-radius: 5px;
+    border: #F27705;
+    color: #FFFFFF;
+    margin: 5px;
+}
+input {
+    border-radius: 5px;
+    border: #F27705 1px solid;
+    background-color: #FFFFFF;
+    padding: 12px 10px;
+    color: #4B4B4B;
+    margin: 10px 5px;
+}

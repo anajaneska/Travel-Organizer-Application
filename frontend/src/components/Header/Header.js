@@ -14,7 +14,7 @@ const Header = () => {
 
   return (
     <nav>
-        <Link to={"/"}><img src={"/logo.png"} alt={"LOGO"} /></Link>
+        <Link to={"/"}><img src={"/logo.png"} alt={"LOGO"} id={'logo'}/></Link>
       <div>
         {isLoggedIn && (
         <Link to={"/trips"}>My Trips</Link>

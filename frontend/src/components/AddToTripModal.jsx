@@ -85,7 +85,7 @@ export default function AddToTripModal({ tripId, onClose, onSuccess }) {
     return (
         <div className="modal-overlay">
             <div className="modal-content">
-                <button className="close-btn" onClick={onClose}>×</button>
+                <button className="close-btn d-flex justify-content-end px-0" style={{color: '#4B4B4B'}} onClick={onClose}>×</button>
                 <h3>Add to Trip</h3>
 
                 {/* Type selector for choosing form */}

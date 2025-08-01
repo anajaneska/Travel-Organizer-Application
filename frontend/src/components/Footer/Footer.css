@@ -1,0 +1,28 @@
+* {
+    font-family: 'Inter', 'Arial', sans-serif;
+}
+footer {
+    background-color: #F3F3F3;
+    margin-top: 90px;
+}
+h3 {
+    color: rgb(33, 37, 41);
+}
+form {
+    display: flex;
+}
+input, textarea {
+    border-radius: 5px;
+    border: #F27705 1px solid;
+    background-color: #FFFFFF;
+    padding: 12px 10px;
+    color: #4B4B4B;
+}
+button {
+    padding: 12px 35px;
+    background: #F27705;
+    border-radius: 5px;
+    border: #F27705;
+    color: #FFFFFF;
+    margin: 0;
+}

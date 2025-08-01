@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import instance from '../custom-axios/axios'
+import instance from '../../custom-axios/axios'
 import {useNavigate} from "react-router-dom";
+import './Login.css'
 
 export default function Login() {
   const [form, setForm] = useState({ username: '', password: '' });
@@ -25,8 +26,10 @@ export default function Login() {
   };
 
   return (
+    <div className={'container px-6'}>
+     <h2 className={'my-3'}>Login</h2>
     <form onSubmit={handleSubmit}>
-      <h2>Login</h2>
+
       <input
         type="text"
         placeholder="Username"
@@ -43,6 +46,7 @@ export default function Login() {
       />
       <button type="submit">Login</button>
     </form>
+    </div>
   );
 }
 

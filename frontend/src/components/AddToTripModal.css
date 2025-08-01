@@ -6,7 +6,9 @@
     display: flex; align-items: center; justify-content: center;
     z-index: 1000;
 }
-
+input, button {
+    margin: 5px 0;
+}
 .modal-content {
     background: white;
     padding: 2rem;

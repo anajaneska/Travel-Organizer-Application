@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import TravelAppService from "../repository/repo";
+import TravelAppService from "../../repository/repo";
+import './TripCreator.css'
 
 const TripCreator = ({ onCreate }) => {
   const navigate = useNavigate();
@@ -30,7 +31,8 @@ const TripCreator = ({ onCreate }) => {
   };
 
   return (
-    <section>
+    <section >
+        <div id={'container'} className='container'>
       <h1>Create A Trip</h1>
       <p>Organize Your Accommodation, Transportation and Activity!</p>
         <div>
@@ -54,6 +56,7 @@ const TripCreator = ({ onCreate }) => {
                 type="number"
                 placeholder="Budget"
                 value={trip.budget}
+                min={0}
                 onChange={(e) => setTrip({...trip, budget: e.target.value})}
             />
             <button
@@ -61,6 +64,7 @@ const TripCreator = ({ onCreate }) => {
             >
                 Create Trip
             </button>
+        </div>
         </div>
     </section>
   );

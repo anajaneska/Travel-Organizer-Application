@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import instance from '../custom-axios/axios'
 import {useNavigate} from "react-router-dom";
+import './Login/Login.css'
 
 export default function Register() {
   const [form, setForm] = useState({ username: '', password: '' });
@@ -17,11 +18,14 @@ export default function Register() {
   };
 
   return (
+    <div className={'container px-6'}>
+      <h2 className={'my-3'}>Register</h2>
     <form onSubmit={handleSubmit}>
-      <h2>Register</h2>
+
       <input type="text" placeholder="Username" onChange={(e) => setForm({ ...form, username: e.target.value })} />
       <input type="password" placeholder="Password" onChange={(e) => setForm({ ...form, password: e.target.value })} />
       <button type="submit">Register</button>
     </form>
+    </div>
   );
 }

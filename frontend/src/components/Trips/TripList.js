@@ -40,40 +40,47 @@ export default function TripsList() {
 
     const renderTripCard = (trip) => (
         <li key={trip.id} className="trip-card">
-            <Link to={`/trips/${trip.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                <h3 className="trip-name">{trip.name}</h3>
-                <div className="trip-destination">{trip.destination}</div>
-                <div className="trip-dates">
-                    {trip.startDate} – {trip.endDate}
+            <Link to={`/trips/${trip.id}`} style={{textDecoration: 'none', color: 'inherit'}}>
+                <h3 className="trip-name text-capitalize fw-semibold" style={{color: 'rgb(34, 34, 34)', fontSize: '22px'}}>{trip.name}</h3>
+                <div className="trip-destination" style={{color: 'rgb(34, 34, 34)'}}>{trip.destination}</div>
+                <div className="trip-dates d-flex">
+                    Start Date: <div className='fw-medium mx-1' style={{color: '#333'}}> {trip.startDate}</div>
                 </div>
-                <div className="trip-budget">Budget: ${trip.budget}</div>
+                <div className="trip-dates d-flex">
+                    End Date: <div className='fw-medium mx-1' style={{color: '#333'}}>{trip.endDate}</div>
+                </div>
+                <div className="trip-budget d-flex justify-content-end fw-medium"
+                     style={{color: '#222222', fontSize: '16px'}}> Budget:
+                    <div className='fw-medium mx-1'>${trip.budget}</div></div>
             </Link>
         </li>
     );
 
     return (
         <div className="trips-container">
-            <h2>Your Trips</h2>
-            <Link to={"/create-trip"}>
-                <button>Create Trip</button>
-            </Link>
+            <div className={'d-flex justify-content-between align-top'}>
+                <h2 className={'m-0 fw-medium'}>Your Trips</h2>
+                <Link to={"/create-trip"} className={'text-decoration-none'}>
+                    <button >Create Trip</button>
+                </Link>
+            </div>
 
             {upcomingTrips.length > 0 && (
-                <>
-                    <h3>Upcoming Trips</h3>
-                    <ul className="trips-list">
+                <div className={'my-5'}>
+                    <h3 className={'my-4'}>Upcoming Trips</h3>
+                    <ul className="trips-list d-block">
                         {upcomingTrips.map(renderTripCard)}
                     </ul>
-                </>
+                </div>
             )}
 
             {pastTrips.length > 0 && (
-                <>
-                    <h3>Past Trips</h3>
-                    <ul className="trips-list">
+                <div className={'my-5'}>
+                    <h3 className={'my-4'}>Past Trips</h3>
+                    <ul className="trips-list d-block">
                         {pastTrips.map(renderTripCard)}
                     </ul>
-                </>
+                </div>
             )}
         </div>
     );

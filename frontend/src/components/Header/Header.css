@@ -2,8 +2,9 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* background-color: #003049; */
-  padding: 1rem 2rem;
+  background-color: #ffffff;
+  padding: 1rem 3rem;
+  font-size: 1.1rem;
 }
 
 nav img {
@@ -13,14 +14,19 @@ nav img {
 nav div {
   display: flex;
   gap: 1.5rem;
+  align-items: center;
 }
 
 nav a {
+  color: #4B4B4B;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s ease-in-out;
-}
 
+}
+#logo {
+  color: #F27705;
+}
 nav a:hover {
   color: #fcbf49;
 }
@@ -29,7 +35,7 @@ nav a:hover {
   border: none;
   cursor: pointer;
   font-weight: 500;
-  font-size: 1rem;
+  color: #4B4B4B;
   padding: 0;
   margin-left: 1rem;
   transition: color 0.2s ease-in-out;

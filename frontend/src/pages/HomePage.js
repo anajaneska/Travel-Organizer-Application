@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Footer from "../components/Footer";
-import TripCreator from "../components/TripCreator";
+import Footer from "../components/Footer/Footer";
+import TripCreator from "../components/TripCreator/TripCreator";
 import ActivityList from "../components/ActivityList";
 
 import HotelList from "../components/HotelList";
@@ -12,7 +12,7 @@ const HomePage = () => {
   return (
     <div className="flex flex-col min-h-screen">
 
-      <main className="flex-1 container mx-auto p-4">
+      <main>
         <TripCreator />
         <HotelList />
         <ActivityList/>

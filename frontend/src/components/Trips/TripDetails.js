@@ -11,6 +11,7 @@ const TripDetails = () => {
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
     const [trip, setTrip] = useState(null);
+    const [totalExpenses, setTotalExpenses] = useState(0);
     const [editMode, setEditMode] = useState(false);
     const [editingItem, setEditingItem] = useState(null); // { type, item }
     const [formData, setFormData] = useState({
@@ -19,6 +20,14 @@ const TripDetails = () => {
         endDate: "",
         budget: ""
     });
+
+    const calculateTotalExpenses = (trip) => {
+        const activityTotal = (trip.activities || []).reduce((sum, item) => sum + (item.cost || 0), 0);
+        const transportTotal = (trip.transportations || []).reduce((sum, item) => sum + (item.cost || 0), 0);
+        const accommodationTotal = (trip.accommodations || []).reduce((sum, item) => sum + (item.totalCost || 0), 0);
+
+        return activityTotal + transportTotal + accommodationTotal;
+    };
 
     const fetchTrip = async () => {
         try {
@@ -30,6 +39,8 @@ const TripDetails = () => {
                 endDate: response.data.endDate,
                 budget: response.data.budget
             });
+            const total = calculateTotalExpenses(response.data);
+            setTotalExpenses(total);
         } catch (err) {
             alert("Failed to load trip");
             navigate("/");
@@ -37,6 +48,7 @@ const TripDetails = () => {
     };
 
     useEffect(() => {
+
         fetchTrip();
     }, [id, navigate]);
 
@@ -101,6 +113,9 @@ const renderCard = (item, type) => {
         await instance.put(`/${endpointMap[editingItem.type]}/${editingItem.id}`, payload);
         setEditingItem(null);
         fetchTrip();
+        const updatedTrip = await TravelAppService.fetchTripById(id);
+        setTrip(updatedTrip.data);
+        setTotalExpenses(calculateTotalExpenses(updatedTrip.data));
     } catch {
         alert("Update failed");
     }
@@ -111,45 +126,63 @@ const renderCard = (item, type) => {
     if (isEditing) {
         const data = editingItem.data;
         return (
-            <div key={item.id} className="card">
+            <div key={item.id} className="edit-form d-grid p-3" style={{border: 'rgb(51, 51, 51) 1px solid', borderRadius: '5px'}}>
                 {type === "Accommodation" && (
                     <>
-                        <input name="location" value={data.location} onChange={handleEditChange} />
-                        <input type="date" name="checkInDate" value={data.checkInDate} onChange={handleEditChange} />
-                        <input type="date" name="checkOutDate" value={data.checkOutDate} onChange={handleEditChange} />
-                        <input type="number" name="totalCost" value={data.totalCost} onChange={handleEditChange} />
+                    <label className={'d-flex align-items-center'} style={{color: '#555'}}> Location:
+                        <input name="location" value={data.location} onChange={handleEditChange} className={'px-2 py-1 mx-1'} style={{color: 'rgb(51, 51, 51)'}}/></label>
+                    <label className={'d-flex align-items-center'} style={{color: '#555'}}> Start:
+                        <input type="date" name="checkInDate" value={data.checkInDate} onChange={handleEditChange} className={'px-2 py-1 mx-1'} style={{color: 'rgb(51, 51, 51)'}}/></label>
+                    <label className={'d-flex align-items-center'} style={{color: '#555'}}> End:
+                        <input type="date" name="checkOutDate" value={data.checkOutDate} onChange={handleEditChange} className={'px-2 py-1 mx-1'} style={{color: 'rgb(51, 51, 51)'}}/></label>
+                    <label className={'d-flex align-items-center'} style={{color: '#555'}}> Cost:
+                        <input type="number" name="totalCost" value={data.totalCost} onChange={handleEditChange} className={'px-2 py-1 mx-1'} style={{color: 'rgb(51, 51, 51)'}}/></label>
                     </>
                 )}
                 {type === "Activity" && (
                     <>
-                        <input name="name" value={data.name} onChange={handleEditChange} />
-                        <input name="description" value={data.description} onChange={handleEditChange} />
-                        <input name="location" value={data.location} onChange={handleEditChange} />
-                        <input type="datetime-local" name="startTime" value={data.startTime} onChange={handleEditChange} />
-                        <input type="datetime-local" name="endTime" value={data.endTime} onChange={handleEditChange} />
-                        <input type="number" name="cost" value={data.cost} onChange={handleEditChange} />
+                    <label className={'d-flex align-items-center'} style={{color: '#555'}}> Activity:
+                        <input name="name" value={data.name} onChange={handleEditChange} className={'px-2 py-1 mx-1'} style={{color: 'rgb(51, 51, 51)'}} /></label>
+                    <label className={'d-flex align-items-center'} style={{color: '#555'}}> Description:
+                        <input name="description" value={data.description} onChange={handleEditChange} className={'px-2 py-1 mx-1'} style={{color: 'rgb(51, 51, 51)'}}  /></label>
+                    <label className={'d-flex align-items-center'} style={{color: '#555'}}> Location:
+                        <input name="location" value={data.location} onChange={handleEditChange} className={'px-2 py-1 mx-1'} style={{color: 'rgb(51, 51, 51)'}} /></label>
+                    <label className={'d-flex align-items-center'} style={{color: '#555'}}> Start:
+                        <input type="datetime-local" name="startTime" value={data.startTime} onChange={handleEditChange} className={'px-2 py-1 mx-1'} style={{color: 'rgb(51, 51, 51)'}} /></label>
+                    <label className={'d-flex align-items-center'} style={{color: '#555'}}> End:
+                        <input type="datetime-local" name="endTime" value={data.endTime} onChange={handleEditChange} className={'px-2 py-1 mx-1'} style={{color: 'rgb(51, 51, 51)'}} /></label>
+                    <label className={'d-flex align-items-center'} style={{color: '#555'}}> Cost:
+                        <input type="number" name="cost" value={data.cost} onChange={handleEditChange} className={'px-2 py-1 mx-1'} style={{color: 'rgb(51, 51, 51)'}} /></label>
                     </>
                 )}
                 {type === "Transportation" && (
                     <>
-                        <select name="type" value={data.type} onChange={handleEditChange}>
+                    <label className={'d-flex align-items-center'} style={{color: '#555'}}> Type:
+                        <select name="type" value={data.type} onChange={handleEditChange} style={{ width: '25%', marginLeft: '0.25rem' }}>
                             <option value="CAR">Car</option>
                             <option value="PLANE">Plane</option>
                             <option value="BUS">Bus</option>
                             <option value="TRAIN">Train</option>
                             <option value="BOAT">Boat</option>
                             <option value="TRAM">Tram</option>
-                        </select>
-                        <input name="startLocation" value={data.startLocation} onChange={handleEditChange} />
-                        <input name="destination" value={data.destination} onChange={handleEditChange} />
-                        <input type="datetime-local" name="departureTime" value={data.departureTime} onChange={handleEditChange} />
-                        <input type="datetime-local" name="arrivalTime" value={data.arrivalTime} onChange={handleEditChange} />
-                        <input type="number" name="cost" value={data.cost} onChange={handleEditChange} />
+                        </select></label>
+                        <label className={'d-flex align-items-center'} style={{color: '#555'}}> Location:
+                            <input name="startLocation" value={data.startLocation} onChange={handleEditChange} className={'px-2 py-1 mx-1'} style={{color: 'rgb(51, 51, 51)'}}/> </label>
+                        <label className={'d-flex align-items-center'} style={{color: '#555'}}> Destination:
+                            <input name="destination" value={data.destination} onChange={handleEditChange} className={'px-2 py-1 mx-1'} style={{color: 'rgb(51, 51, 51)'}}/></label>
+                        <label className={'d-flex align-items-center'} style={{color: '#555'}}> Departure Time:
+                            <input type="datetime-local" name="departureTime" value={data.departureTime} onChange={handleEditChange} className={'px-2 py-1 mx-1'} style={{color: 'rgb(51, 51, 51)'}}/></label>
+                        <label className={'d-flex align-items-center'} style={{color: '#555'}}> Arrival Time:
+                            <input type="datetime-local" name="arrivalTime" value={data.arrivalTime} onChange={handleEditChange} className={'px-2 py-1 mx-1'} style={{color: 'rgb(51, 51, 51)'}} /></label>
+                        <label className={'d-flex align-items-center'} style={{color: '#555'}}> Cost:
+                            <input type="number" name="cost" value={data.cost} onChange={handleEditChange} className={'px-2 py-1 mx-1'} style={{color: 'rgb(51, 51, 51)'}}/></label>
                     </>
                 )}
-                <button onClick={saveEdit}>Save</button>
-                <button onClick={cancelEdit}>Cancel</button>
-            </div>
+                <div className='d-grid' style={{ width: '30%' }}>
+                <button onClick={saveEdit} className="btn btn-primary btn-sm me-1 mb-1 px-3 py-2" style={{ backgroundColor: '#F27705', border: '#F27705 2px solid' }}>Save</button>
+                <button onClick={cancelEdit} className="btn btn-outline-primary btn-sm me-1 mb-1 px-3 py-1"
+                        style={{ border: '#F27705 2px solid', color: '#333' }}>Cancel</button>
+            </div> </div>
         );
     }
 
@@ -169,24 +202,32 @@ const renderCard = (item, type) => {
     };
 
     return (
-        <div key={item.id} className="card d-flex justify-content-between align-top mx-1 my-2 p-3">
+        <div key={item.id} className="d-flex justify-content-between align-top mx-1 my-2 p-3"
+             style={{border: 'rgb(51, 51, 51) 1px solid', borderRadius: '5px'}}>
             <div>
                 <p className={'d-flex'} style={{color: '#555'}}>{type}: <div className='fw-medium mx-1'
                                                                              style={{color: 'rgb(51, 51, 51)'}}> {item.name || item.location || item.description || item.type} </div>
                 </p>
-                <p className={'d-flex'} style={{color: '#555'}}>Start:<div className='fw-medium mx-1'
-                             style={{color: 'rgb(51, 51, 51)'}}> {formatDate(item.startDate || item.checkInDate || item.date || item.departureTime || item.startTime)}
-                </div></p>
+                <p className={'d-flex'} style={{color: '#555'}}>Start:
+                    <div className='fw-medium mx-1'
+                         style={{color: 'rgb(51, 51, 51)'}}> {formatDate(item.startDate || item.checkInDate || item.date || item.departureTime || item.startTime)}
+                    </div>
+                </p>
                 <p className={'d-flex'} style={{color: '#555'}}>
-                    End:<div className='fw-medium mx-1'
-                                     style={{color: 'rgb(51, 51, 51)'}}>{formatDate(item.endDate || item.checkOutDate || item.arrivalTime || item.endTime)}
-                    </div></p>
+                    End:
+                    <div className='fw-medium mx-1'
+                         style={{color: 'rgb(51, 51, 51)'}}>{formatDate(item.endDate || item.checkOutDate || item.arrivalTime || item.endTime)}
+                    </div>
+                </p>
                 <p className={'d-flex'} style={{color: '#555'}}>
-                    Cost:<div className='fw-medium mx-1'
-                              style={{color: 'rgb(51, 51, 51)'}}> ${item.cost || item.totalCost || item.price || 0}</div></p>
+                    Cost:
+                    <div className='fw-medium mx-1'
+                         style={{color: 'rgb(51, 51, 51)'}}> ${item.cost || item.totalCost || item.price || 0}</div>
+                </p>
             </div>
             <div className='my-3'>
-                <MdOutlineEdit size={28} onClick={() => setEditingItem({type, id: item.id, data: {...item}})} className='mx-3'/>
+                <MdOutlineEdit size={28} onClick={() => setEditingItem({type, id: item.id, data: {...item}})}
+                               className='mx-3'/>
                 <BiTrash size={28} onClick={deleteEntity} className='mx-3'/>
             </div>
         </div>
@@ -198,7 +239,7 @@ const renderCard = (item, type) => {
     return (
         <div className="trip-details container">
             <div className={'d-flex justify-content-between align-top'}>
-                <h2 className={'m-0 fw-medium'}>Trip Details</h2>
+            <h2 className={'m-0 fw-medium'}>Trip Details</h2>
                 <button onClick={() => setShowModal(true)}>Add to Trip</button>
             </div>
 
@@ -221,8 +262,9 @@ const renderCard = (item, type) => {
                                             onChange={handleChange} className={'px-2 py-1 mx-1'} style={{color: 'rgb(51, 51, 51)'}}/></label>
                     <label className={'d-flex align-items-center'} style={{color: '#555'}}>Budget:
                         <input name="budget" type="number" value={formData.budget} onChange={handleChange} className={'px-2 py-1 mx-1'} style={{color: 'rgb(51, 51, 51)'}}/></label>
-                   <button onClick={handleUpdate}>Save</button>
-                    <button onClick={() => setEditMode(false)}>Cancel</button>
+                   <button onClick={handleUpdate} className="btn btn-primary btn-sm me-1 mb-1 px-3 py-2" style={{ backgroundColor: '#F27705', border: '#F27705 2px solid' }}>Save</button>
+                    <button onClick={() => setEditMode(false)} className="btn btn-outline-primary btn-sm me-1 mb-1 px-3 py-1"
+                            style={{ border: '#F27705 2px solid', color: '#333' }}>Cancel</button>
                 </div>
             ) : (
                 <div className="view-mode d-flex justify-content-between align-top mx-1">
@@ -240,9 +282,20 @@ const renderCard = (item, type) => {
                             <div className='fw-medium mx-1' style={{color: 'rgb(51, 51, 51)'}}>${trip.budget}</div>
                         </p>
                     </div>
-                    <div className='my-3 mx-3'>
-                        <MdOutlineEdit size={28} onClick={() => setEditMode(true)} className='mx-3'/>
-                        <BiTrash size={28} onClick={handleDelete} className='mx-3'/>
+                    <div className='d-grid'>
+                        <div className='d-flex justify-content-center align-items-center my-3 mx-3'>
+                            <MdOutlineEdit size={28} onClick={() => setEditMode(true)} className='mx-3'/>
+                            <BiTrash size={28} onClick={handleDelete} className='mx-3'/>
+                        </div>
+                        <div className='mt-2' style={{color: '#555'}}>
+                            Current Expenses:
+                            <span className='fw-medium mx-1' style={{
+                                color: totalExpenses > (trip.budget || 0) ? 'red' : 'rgb(51, 51, 51)',
+                                fontWeight: totalExpenses > (trip.budget || 0) ? 'bold' : 'normal',
+                            }}>
+                                 ${totalExpenses}
+                            </span>
+                        </div>
                     </div>
                 </div>
             )}
@@ -250,17 +303,17 @@ const renderCard = (item, type) => {
             <hr/>
 
             <h3>Transportations</h3>
-            <div className="card-group">
+            <div className="d-grid">
                 {trip.transportations?.map(t => renderCard(t, "Transportation"))}
             </div>
 
             <h3>Accommodations</h3>
-            <div className="card-group">
+            <div className="d-grid">
                 {trip.accommodations?.map(a => renderCard(a, "Accommodation"))}
             </div>
 
             <h3>Activities</h3>
-            <div className="card-group">
+            <div className="d-grid">
                 {trip.activities?.map(act => renderCard(act, "Activity"))}
             </div>
         </div>
